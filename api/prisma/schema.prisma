@@ -36,7 +36,6 @@ model Transaksi {
   produk      Produk        @relation(fields: [produkId], references: [id])
   produkId    Int
 
-  jumlah      Int
   totalHarga  Int
   createdAt   DateTime      @default(now()) @db.Date
 }
