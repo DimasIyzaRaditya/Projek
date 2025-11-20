@@ -140,5 +140,7 @@ export async function DELETE(
         { status: 404 }
       );
     }
+    return NextResponse.json(
+    );
   }
 }
