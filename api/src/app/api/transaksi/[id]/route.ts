@@ -97,6 +97,7 @@ export async function PUT(
       },
     });
 
+    return NextResponse.json({ data: transaksi });
   } catch (error: any) {
   }
 }
