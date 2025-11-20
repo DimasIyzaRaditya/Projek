@@ -84,6 +84,8 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     if (error.code === "P2003") {
       return NextResponse.json(
+        { error: "Invalid userId or produkId" },
+        { status: 400 }
       );
     }
   }
