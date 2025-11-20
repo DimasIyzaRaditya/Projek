@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
 
 // GET all transaksi
 export async function GET() {
@@ -16,14 +16,18 @@ export async function GET() {
         produk: true,
       },
       orderBy: {
-        createdAt: 'desc',
+        createdAt: "desc",
       },
     });
     return NextResponse.json({ data: transaksi });
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to fetch transaksi' },
+      { error: "Failed to fetch transaksi" },
       { status: 500 }
     );
   }
+}
+
+// POST create new transaksi
+export async function POST(request: NextRequest) {
 }
