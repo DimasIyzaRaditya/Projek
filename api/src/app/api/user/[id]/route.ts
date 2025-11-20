@@ -83,3 +83,9 @@ export async function PUT(
     );
   }
 }
+
+// DELETE user
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {}
