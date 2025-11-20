@@ -6,6 +6,7 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  try {
     const { id } = await params;
     const transaksi = await prisma.transaksi.findUnique({
       where: { id: parseInt(id) },
@@ -27,4 +28,8 @@ export async function GET(
         { status: 404 }
       );
     }
+
+    return NextResponse.json({ data: transaksi });
+  } catch (error) {
+  }
 }
