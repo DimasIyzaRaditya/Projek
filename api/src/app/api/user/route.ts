@@ -20,3 +20,7 @@ export async function GET() {
     );
   }
 }
+
+// POST create new user
+export async function POST(request: NextRequest) {
+}
