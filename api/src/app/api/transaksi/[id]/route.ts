@@ -32,7 +32,7 @@ export async function GET(
     return NextResponse.json({ data: transaksi });
   } catch (error) {
     return NextResponse.json(
-      { error: 'Failed to fetch transaksi' }
+      { error: 'Failed to fetch transaksi' },
       { status: 500 }
     );
   }
