@@ -52,5 +52,12 @@ export async function PUT(
     if (username) updateData.username = username;
     if (password) updateData.password = password;
 
-    const user = await prisma.user.update({});
+    const user = await prisma.user.update({
+      where: { id: parseInt(id) },
+      data: updateData,
+      select: {
+        id: true,
+
+      },
+    });
 }
