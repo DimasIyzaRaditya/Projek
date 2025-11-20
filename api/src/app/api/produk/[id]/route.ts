@@ -109,7 +109,7 @@ export async function DELETE(
     }
     if (err.code === 'P2003') {
       return NextResponse.json(
-        { error: 'Cannot delete produk with existing transactions' }
+        { error: 'Cannot delete produk with existing transactions' },
         { status: 409 }
       );
     }
