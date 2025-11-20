@@ -28,6 +28,8 @@ export async function POST(request: NextRequest) {
 
     if (!name || !username || !password) {
       return NextResponse.json(
+        { error: 'name, username, and password are required' },
+        { status: 400 }
       );
     }
 
