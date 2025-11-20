@@ -42,6 +42,8 @@ export async function POST(request: NextRequest) {
 
     if (typeof totalHarga !== "number" || totalHarga < 0) {
       return NextResponse.json(
+        { error: "totalHarga must be a positive number" },
+        { status: 400 }
       );
     }
 }
