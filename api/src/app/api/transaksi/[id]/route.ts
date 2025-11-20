@@ -70,4 +70,8 @@ export async function PUT(
       }
       updateData.produkId = produkId;
     }
+
+    if (totalHarga !== undefined) {
+      updateData.totalHarga = totalHarga;
+    }
 }
