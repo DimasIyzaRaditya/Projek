@@ -93,4 +93,7 @@ export async function DELETE(
     await prisma.user.delete({
       where: { id: parseInt(id) },
     });
+
+    return NextResponse.json(
+    );
 }
