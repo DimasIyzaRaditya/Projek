@@ -41,3 +41,9 @@ export async function GET(
   }
 }
 
+// PUT update produk
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {}
+
