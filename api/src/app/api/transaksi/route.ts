@@ -39,4 +39,9 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+
+    if (typeof totalHarga !== "number" || totalHarga < 0) {
+      return NextResponse.json(
+      );
+    }
 }
