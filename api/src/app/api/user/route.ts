@@ -23,6 +23,7 @@ export async function GET() {
 
 // POST create new user
 export async function POST(request: NextRequest) {
+  try {
     const body = await request.json();
     const { name, username, password } = body;
 
@@ -45,4 +46,8 @@ export async function POST(request: NextRequest) {
         username: true,
       },
     });
+
+    return NextResponse.json({ data: user }, { status: 201 });
+  } catch (error: any) {
+  }
 }
