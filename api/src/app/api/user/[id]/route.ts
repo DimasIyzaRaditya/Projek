@@ -65,5 +65,9 @@ export async function PUT(
 
     return NextResponse.json({ data: user });
   } catch (error: any) {
+    if (error.code) {
+      return NextResponse.json(
+      );
+    }
   }
 }
