@@ -84,3 +84,8 @@ export async function PUT(
   }
 }
 
+// DELETE produk
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {}
