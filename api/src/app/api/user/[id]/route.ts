@@ -46,4 +46,8 @@ export async function PUT(
     const { id } = await params;
     const body = await request.json();
     const { name, username, password } = body;
+
+    const updateData: any = {};
+    if (name) updateData.name = name;
+
 }
