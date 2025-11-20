@@ -61,4 +61,21 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Produk not found" }, { status: 404 });
     }
 
+    const transaksi = await prisma.transaksi.create({
+      data: {
+        userId,
+        produkId,
+        totalHarga,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            username: true,
+          },
+        },
+        produk: true,
+      },
+    });
 }
