@@ -5,5 +5,22 @@ import { prisma } from '@/lib/prisma';
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
-) {}
-
+) {
+    const { id } = await params;
+    const produk = await prisma.produk.findUnique({
+      where: { id: parseInt(id) },
+      include: {
+        transaksi: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                username: true,
+              },
+            },
+          },
+        },
+      },
+    });
+}
