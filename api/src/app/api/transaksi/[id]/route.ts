@@ -129,6 +129,7 @@ export async function DELETE(
     });
 
     return NextResponse.json(
-
+      { message: 'Transaksi deleted successfully' },
+      { status: 200 }
     );
 }
