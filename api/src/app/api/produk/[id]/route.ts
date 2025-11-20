@@ -55,6 +55,8 @@ export async function PUT(
     if (harga !== undefined) {
       if (typeof harga !== 'number' || harga < 0) {
         return NextResponse.json(
+          { error: 'Harga must be a positive number' }
+          { status: 400 }
         );
       }
       updateData.harga = harga;
