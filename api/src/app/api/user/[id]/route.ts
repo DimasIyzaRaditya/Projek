@@ -102,6 +102,8 @@ export async function DELETE(
   } catch (error: any) {
     if (error.code === 'P2025') {
       return NextResponse.json(
+        { error: 'User not found' }
+        { status: 404 }
       );
     }
   }
