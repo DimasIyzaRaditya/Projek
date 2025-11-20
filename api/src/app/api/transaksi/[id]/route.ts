@@ -136,7 +136,7 @@ export async function DELETE(
   } catch (error: any) {
     if (error.code === 'P2025') {
       return NextResponse.json(
-        { error: 'Transaksi not found' }
+        { error: 'Transaksi not found' },
         { status: 404 }
       );
     }
