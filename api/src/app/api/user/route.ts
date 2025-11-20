@@ -23,4 +23,6 @@ export async function GET() {
 
 // POST create new user
 export async function POST(request: NextRequest) {
+    const body = await request.json();
+    const { name, username, password } = body;
 }
