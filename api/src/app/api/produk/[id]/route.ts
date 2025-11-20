@@ -70,6 +70,11 @@ export async function PUT(
 
     return NextResponse.json({ data: produk });
   } catch (error: unknown) {
+    const err = error as { code?: string };
+    if (err.code === 'P2025') {
+      return NextResponse.json(
+      );
+    }
   }
 }
 
