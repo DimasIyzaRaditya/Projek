@@ -80,4 +80,19 @@ export async function PUT(
       }
       updateData.totalHarga = totalHarga;
     }
+
+    const transaksi = await prisma.transaksi.update({
+      where: { id: parseInt(id) },
+      data: updateData,
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            username: true,
+          },
+        },
+        produk: true,
+      },
+    });
 }
