@@ -55,5 +55,7 @@ export async function POST(request: NextRequest) {
         { status: 409 }
       );
     }
+    return NextResponse.json(
+    );
   }
 }
