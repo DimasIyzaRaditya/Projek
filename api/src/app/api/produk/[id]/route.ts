@@ -100,5 +100,9 @@ export async function DELETE(
       { status: 200 }
     );
   } catch (error: unknown) {
+    const err = error as { code?: string };
+    if (err.code === 'P2025') {
+      return NextResponse.json(
+    }
   }
 }
