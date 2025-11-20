@@ -71,7 +71,10 @@ export async function PUT(
         { status: 404 }
       );
     }
-    if (error.code) {
+    if (error.code === 'P2002') {
       return NextResponse.json(
+        { error: 'Username already exists' }
+        { status: 409 }
+      );
   }
 }
