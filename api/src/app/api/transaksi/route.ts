@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 
 // GET all transaksi
 export async function GET() {
+  try {
     const transaksi = await prisma.transaksi.findMany({
       include: {
         user: {
@@ -18,4 +19,11 @@ export async function GET() {
         createdAt: 'desc',
       },
     });
+    return NextResponse.json({ data: transaksi });
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Failed to fetch transaksi' },
+      { status: 500 }
+    );
+  }
 }
