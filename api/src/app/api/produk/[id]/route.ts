@@ -77,6 +77,9 @@ export async function PUT(
         { status: 404 }
       );
     }
+    return NextResponse.json(
+
+    );
   }
 }
 
