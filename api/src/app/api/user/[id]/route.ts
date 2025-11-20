@@ -108,6 +108,8 @@ export async function DELETE(
     }
     if (error.code === 'P2003') {
       return NextResponse.json(
+        { error: 'Cannot delete user with existing transactions' }
+        { status: 409 }
       );
     }
   }
