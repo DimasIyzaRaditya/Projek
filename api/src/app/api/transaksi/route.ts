@@ -32,4 +32,11 @@ export async function GET() {
 export async function POST(request: NextRequest) {
     const body = await request.json();
     const { userId, produkId, totalHarga } = body;
+
+    if (!userId || !produkId || !totalHarga) {
+      return NextResponse.json(
+        { error: "userId, produkId, and totalHarga are required" },
+        { status: 400 }
+      );
+    }
 }
