@@ -20,5 +20,9 @@ export async function GET(
         },
       },
     });
+        if (!user) {
+      return NextResponse.json(
+      );
+    }
 }
 
