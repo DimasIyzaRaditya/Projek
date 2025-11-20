@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 
 // GET all users
 export async function GET() {
+  try {
     const users = await prisma.user.findMany({
       select: {
         id: true,
@@ -11,4 +12,9 @@ export async function GET() {
         // password tidak di-include untuk keamanan
       },
     });
+    return NextResponse.json({ data: users });
+  } catch (error) {
+    return NextResponse.json(
+    );
+  }
 }
