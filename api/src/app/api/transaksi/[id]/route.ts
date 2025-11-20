@@ -23,7 +23,7 @@ export async function GET(
 
     if (!transaksi) {
       return NextResponse.json(
-        { error: 'Transaksi not found' }
+        { error: 'Transaksi not found' },
         { status: 404 }
       );
     }
