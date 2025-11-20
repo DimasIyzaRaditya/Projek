@@ -17,6 +17,7 @@ export async function GET(
             username: true,
           },
         },
+        produk: true,
       },
     });
 }
