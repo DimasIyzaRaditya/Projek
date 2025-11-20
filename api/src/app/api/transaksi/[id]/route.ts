@@ -20,4 +20,9 @@ export async function GET(
         produk: true,
       },
     });
+
+    if (!transaksi) {
+      return NextResponse.json(
+      );
+    }
 }
