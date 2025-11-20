@@ -80,6 +80,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    return NextResponse.json({ data: transaksi }, { status: 201 });
   } catch (error: any) {
   }
 }
