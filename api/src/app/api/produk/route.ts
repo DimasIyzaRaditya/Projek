@@ -29,10 +29,16 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    if (typeof harga !== 'number' || harga < 0) {
+        if (typeof harga !== 'number' || harga < 0) {
       return NextResponse.json(
         { error: 'Harga must be a positive number' },
         { status: 400 }
       );
     }
+        const produk = await prisma.produk.create({
+      data: {
+        nama,
+        harga,
+      },
+    });
 }
