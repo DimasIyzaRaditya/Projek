@@ -59,4 +59,9 @@ export async function PUT(
       }
       updateData.userId = userId;
     }
+
+    if (produkId) {
+      const produk = await prisma.produk.findUnique({ where: { id: produkId } });
+      updateData.produkId = produkId;
+    }
 }
