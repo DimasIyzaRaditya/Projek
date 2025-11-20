@@ -9,7 +9,7 @@ export async function GET() {
         id: 'asc',
       },
     });
-    return NextResponse.json({ data: produk });
+    return NextResponse.json(produk);
   } catch (error) {
     return NextResponse.json(
       { error: 'Failed to fetch produk' },
@@ -20,5 +20,6 @@ export async function GET() {
 
 // POST create new produk
 export async function POST(request: NextRequest) {
-
+    const body = await request.json();
+    const { nama, harga } = body;
 }
