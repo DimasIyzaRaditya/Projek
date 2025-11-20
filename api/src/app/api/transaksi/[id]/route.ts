@@ -141,6 +141,8 @@ export async function DELETE(
       );
     }
     return NextResponse.json(
+      { error: 'Failed to delete transaksi' },
+      { status: 500 }
     );
   }
 }
