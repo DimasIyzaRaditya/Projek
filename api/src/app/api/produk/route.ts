@@ -20,6 +20,15 @@ export async function GET() {
 
 // POST create new produk
 export async function POST(request: NextRequest) {
+  try {
     const body = await request.json();
     const { nama, harga } = body;
+
+    if (!nama || !harga) {
+      return NextResponse.json(
+        { error: 'Nama and harga are required' },
+        { status: 400 }
+      );
+    }
+  }
 }
