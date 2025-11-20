@@ -49,5 +49,7 @@ export async function PUT(
     const { id } = await params;
     const body = await request.json();
     const { nama, harga } = body;
+
+    const updateData: { nama?: string; harga?: number } = {};
 }
 
