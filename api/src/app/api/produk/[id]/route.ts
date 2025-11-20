@@ -78,7 +78,7 @@ export async function PUT(
       );
     }
     return NextResponse.json(
-      { error: 'Failed to update produk' }
+      { error: 'Failed to update produk' },
       { status: 500 }
     );
   }
