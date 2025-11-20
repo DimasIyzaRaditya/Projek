@@ -89,6 +89,7 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  try {
     const { id } = await params;
     await prisma.user.delete({
       where: { id: parseInt(id) },
@@ -98,4 +99,6 @@ export async function DELETE(
       { message: 'User deleted successfully' },
       { status: 200 }
     );
+  } catch (error: any) {
+  }
 }
