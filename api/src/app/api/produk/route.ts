@@ -9,7 +9,7 @@ export async function GET() {
         id: 'asc',
       },
     });
-    return NextResponse.json(produk);
+    return NextResponse.json({ data: produk });
   } catch (error) {
     return NextResponse.json(
       { error: 'Failed to fetch produk' },
@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return NextResponse.json(produk, { status: 201 });
+    return NextResponse.json({ data: produk }, { status: 201 });
   } catch (error) {
     return NextResponse.json(
       { error: 'Failed to create produk' },
