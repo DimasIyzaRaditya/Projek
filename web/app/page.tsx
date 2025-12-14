@@ -157,29 +157,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Categories */}
-      <section className="border-t border-neutral-800 bg-neutral-950 py-16">
-        <div className="container mx-auto px-4">
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold text-neutral-50">Kategori Populer</h2>
-            <p className="mt-2 text-neutral-400">Temukan produk berdasarkan kategori</p>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {["UI/UX Template", "E-Book", "Source Code", "Icon & Assets"].map((category) => (
-              <Card key={category} className="cursor-pointer transition-all hover:border-neutral-700">
-                <CardHeader>
-                  <CardTitle className="text-lg">{category}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-neutral-400">Lihat semua produk</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Footer */}
       <footer className="border-t border-neutral-800 bg-neutral-950 py-12">
         <div className="container mx-auto px-4">
