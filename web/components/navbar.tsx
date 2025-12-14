@@ -1,11 +1,19 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { ShoppingBag, Search, User, Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
 export default function Navbar() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  useEffect(() => {
+    const userData = localStorage.getItem("user")
+    setIsLoggedIn(!!userData)
+  }, [])
+
   return (
     <nav className="sticky top-0 z-50 border-b border-neutral-800 bg-neutral-950/95 backdrop-blur supports-[backdrop-filter]:bg-neutral-950/80">
       <div className="container mx-auto px-4">
@@ -34,12 +42,14 @@ export default function Navbar() {
               <Search className="h-5 w-5" />
             </Button>
             
-            <Link href="/login">
-              <Button variant="ghost" size="sm">
-                <User className="h-4 w-4 mr-2" />
-                Login
-              </Button>
-            </Link>
+            {!isLoggedIn && (
+              <Link href="/login">
+                <Button variant="ghost" size="sm">
+                  <User className="h-4 w-4 mr-2" />
+                  Login
+                </Button>
+              </Link>
+            )}
 
             <Button variant="ghost" size="icon" className="md:hidden">
               <Menu className="h-5 w-5" />
