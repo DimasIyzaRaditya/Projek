@@ -1,5 +1,227 @@
-import { redirect } from 'next/navigation';
+import Navbar from "@/components/navbar"
+import ProductCard from "@/components/product-card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { TrendingUp, Star, Download, Award } from "lucide-react"
+import { API_PRODUK } from "@/lib/api"
 
-export default function Home() {
-  redirect('/public');
+interface Produk {
+  id: number
+  nama: string
+  harga: number
+}
+
+async function getProduk(): Promise<Produk[]> {
+  try {
+    const res = await fetch(API_PRODUK, {
+      cache: 'no-store'
+    })
+    if (!res.ok) throw new Error('Failed to fetch')
+    const data = await res.json()
+    return data.data || []
+  } catch (error) {
+    console.error('Error fetching produk:', error)
+    return []
+  }
+}
+
+export default async function HomePage() {
+  const products = await getProduk()
+  
+  // Fallback jika tidak ada data dari database
+  const dummyProducts = [
+    {
+      id: "1",
+      title: "Template UI/UX Modern",
+      description: "Template dashboard admin modern dengan komponen lengkap",
+      price: 250000,
+      rating: 4.8,
+      downloads: 1234,
+      category: "UI/UX",
+      imageUrl: ""
+    },
+    {
+      id: "2",
+      title: "E-Book Programming",
+      description: "Panduan lengkap belajar web development dari nol",
+      price: 150000,
+      rating: 4.9,
+      downloads: 2341,
+      category: "E-Book",
+      imageUrl: ""
+    },
+    {
+      id: "3",
+      title: "Icon Pack Premium",
+      description: "Koleksi 1000+ icon SVG untuk berbagai kebutuhan",
+      price: 100000,
+      rating: 4.7,
+      downloads: 3456,
+      category: "Design",
+      imageUrl: ""
+    },
+    {
+      id: "4",
+      title: "Source Code Toko Online",
+      description: "Full source code marketplace dengan fitur lengkap",
+      price: 500000,
+      rating: 4.9,
+      downloads: 876,
+      category: "Source Code",
+      imageUrl: ""
+    },
+  ]
+
+  return (
+    <div className="min-h-screen">
+      <Navbar />
+
+      {/* Hero Section */}
+      <section className="relative overflow-hidden border-b border-neutral-800 bg-gradient-to-b from-neutral-900 to-neutral-950">
+        <div className="container mx-auto px-4 py-24 md:py-32">
+          <div className="mx-auto max-w-3xl text-center">
+            <h1 className="mb-6 text-4xl font-bold tracking-tight text-neutral-50 md:text-6xl">
+              Marketplace File Digital
+              <span className="block text-neutral-400">Untuk Para Enthusiast</span>
+            </h1>
+            <p className="mb-8 text-lg text-neutral-400 md:text-xl">
+              Koleksi pribadi template, ebook, source code, dan aset digital untuk mereka yang berbagi minat yang sama
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="border-b border-neutral-800 bg-neutral-950 py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+            <div className="text-center">
+              <div className="mb-2 flex justify-center">
+                <Download className="h-8 w-8 text-neutral-400" />
+              </div>
+              <div className="text-3xl font-bold text-neutral-50">10K+</div>
+              <div className="text-sm text-neutral-400">Total Download</div>
+            </div>
+            <div className="text-center">
+              <div className="mb-2 flex justify-center">
+                <TrendingUp className="h-8 w-8 text-neutral-400" />
+              </div>
+              <div className="text-3xl font-bold text-neutral-50">500+</div>
+              <div className="text-sm text-neutral-400">Produk Digital</div>
+            </div>
+            <div className="text-center">
+              <div className="mb-2 flex justify-center">
+                <Star className="h-8 w-8 text-neutral-400" />
+              </div>
+              <div className="text-3xl font-bold text-neutral-50">4.8</div>
+              <div className="text-sm text-neutral-400">Rating Rata-rata</div>
+            </div>
+            <div className="text-center">
+              <div className="mb-2 flex justify-center">
+                <Award className="h-8 w-8 text-neutral-400" />
+              </div>
+              <div className="text-3xl font-bold text-neutral-50">100+</div>
+              <div className="text-sm text-neutral-400">Penjual Terpercaya</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Products */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold text-neutral-50">Produk Digital</h2>
+            <p className="mt-2 text-neutral-400">Temukan berbagai produk digital berkualitas untuk kebutuhan Anda</p>
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {products.length > 0 ? (
+              products.map((product) => (
+                <ProductCard 
+                  key={product.id} 
+                  id={product.id.toString()}
+                  title={product.nama}
+                  description="Produk digital berkualitas"
+                  price={product.harga}
+                  rating={4.5}
+                  downloads={0}
+                  imageUrl=""
+                />
+              ))
+            ) : (
+              dummyProducts.map((product) => (
+                <ProductCard key={product.id} id={product.id} title={product.title} description={product.description} price={product.price} rating={product.rating} downloads={product.downloads} imageUrl={product.imageUrl} />
+              ))
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Categories */}
+      <section className="border-t border-neutral-800 bg-neutral-950 py-16">
+        <div className="container mx-auto px-4">
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold text-neutral-50">Kategori Populer</h2>
+            <p className="mt-2 text-neutral-400">Temukan produk berdasarkan kategori</p>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {["UI/UX Template", "E-Book", "Source Code", "Icon & Assets"].map((category) => (
+              <Card key={category} className="cursor-pointer transition-all hover:border-neutral-700">
+                <CardHeader>
+                  <CardTitle className="text-lg">{category}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-neutral-400">Lihat semua produk</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-neutral-800 bg-neutral-950 py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid gap-8 md:grid-cols-4">
+            <div>
+              <h3 className="mb-4 text-lg font-semibold text-neutral-50">DigitalMarket</h3>
+              <p className="text-sm text-neutral-400">
+                Platform jual beli file digital terpercaya di Indonesia
+              </p>
+            </div>
+            <div>
+              <h4 className="mb-4 text-sm font-semibold text-neutral-50">Produk</h4>
+              <ul className="space-y-2 text-sm text-neutral-400">
+                <li>Template</li>
+                <li>E-Book</li>
+                <li>Source Code</li>
+                <li>Assets</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="mb-4 text-sm font-semibold text-neutral-50">Perusahaan</h4>
+              <ul className="space-y-2 text-sm text-neutral-400">
+                <li>Tentang Kami</li>
+                <li>Kontak</li>
+                <li>Karir</li>
+                <li>Blog</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="mb-4 text-sm font-semibold text-neutral-50">Legal</h4>
+              <ul className="space-y-2 text-sm text-neutral-400">
+                <li>Syarat & Ketentuan</li>
+                <li>Kebijakan Privasi</li>
+                <li>Kebijakan Pengembalian</li>
+              </ul>
+            </div>
+          </div>
+          <div className="mt-8 border-t border-neutral-800 pt-8 text-center text-sm text-neutral-400">
+            © 2025 Ahmeng Trade. All rights reserved.
+          </div>
+        </div>
+      </footer>
+    </div>
+  )
 }
