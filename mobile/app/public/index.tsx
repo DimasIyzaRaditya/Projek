@@ -256,6 +256,215 @@ export default function HomePage() {
           </View>
         </View>
       </View>
+
+      {/* Featured Products */}
+      <View style={{ paddingVertical: 24, paddingHorizontal: 16 }}>
+        <Text
+          style={{
+            fontSize: 24,
+            fontWeight: "bold",
+            color: "#fafafa",
+            marginBottom: 8,
+          }}
+        >
+          Produk Digital
+        </Text>
+        <Text style={{ fontSize: 14, color: "#a3a3a3", marginBottom: 16 }}>
+          Temukan berbagai produk digital berkualitas untuk kebutuhan Anda
+        </Text>
+
+        {/* Table Header */}
+        <View
+          style={{
+            backgroundColor: "#1a1a1a",
+            borderTopLeftRadius: 8,
+            borderTopRightRadius: 8,
+            borderBottomWidth: 1,
+            borderBottomColor: "#404040",
+            paddingVertical: 12,
+            paddingHorizontal: 12,
+            flexDirection: "row",
+            borderWidth: 1,
+            borderColor: "#262626",
+          }}
+        >
+          <Text
+            style={{
+              flex: 1,
+              fontSize: 12,
+              fontWeight: "700",
+              color: "#fafafa",
+              textTransform: "uppercase",
+            }}
+          >
+            Nama Produk
+          </Text>
+          <Text
+            style={{
+              width: 100,
+              fontSize: 12,
+              fontWeight: "700",
+              color: "#fafafa",
+              textTransform: "uppercase",
+              textAlign: "right",
+            }}
+          >
+            Harga
+          </Text>
+        </View>
+
+        {/* Table Body */}
+        {loading ? (
+          <View
+            style={{
+              backgroundColor: "#1a1a1a",
+              borderBottomLeftRadius: 8,
+              borderBottomRightRadius: 8,
+              borderLeftWidth: 1,
+              borderLeftColor: "#262626",
+              borderRightWidth: 1,
+              borderRightColor: "#262626",
+              borderBottomWidth: 1,
+              borderBottomColor: "#262626",
+              alignItems: "center",
+              justifyContent: "center",
+              paddingVertical: 40,
+            }}
+          >
+            <MaterialCommunityIcons
+              name="loading"
+              size={32}
+              color="#a3a3a3"
+              style={{ marginBottom: 12 }}
+            />
+            <Text style={{ color: "#a3a3a3", fontSize: 14 }}>
+              Memuat produk...
+            </Text>
+          </View>
+        ) : error ? (
+          <View
+            style={{
+              backgroundColor: "#1a1a1a",
+              borderBottomLeftRadius: 8,
+              borderBottomRightRadius: 8,
+              borderLeftWidth: 1,
+              borderLeftColor: "#262626",
+              borderRightWidth: 1,
+              borderRightColor: "#262626",
+              borderBottomWidth: 1,
+              borderBottomColor: "#262626",
+              alignItems: "center",
+              justifyContent: "center",
+              paddingVertical: 40,
+            }}
+          >
+            <MaterialCommunityIcons
+              name="alert-circle-outline"
+              size={32}
+              color="#f87171"
+              style={{ marginBottom: 12 }}
+            />
+            <Text style={{ color: "#f87171", fontSize: 14, marginBottom: 12 }}>
+              {error}
+            </Text>
+            <Pressable
+              onPress={() => {
+                setLoading(true);
+                setError("");
+                getProduk().then((data) => {
+                  if (data && data.length > 0) {
+                    setProducts(data);
+                  }
+                  setLoading(false);
+                });
+              }}
+              style={{
+                backgroundColor: "#fafafa",
+                paddingHorizontal: 16,
+                paddingVertical: 8,
+                borderRadius: 6,
+              }}
+            >
+              <Text
+                style={{ color: "#0a0a0a", fontWeight: "600", fontSize: 12 }}
+              >
+                Coba Lagi
+              </Text>
+            </Pressable>
+          </View>
+        ) : products && products.length > 0 ? (
+          products.map((product, index) => (
+            <Pressable
+              key={product.id}
+              onPress={() => router.push(`/detail/${product.id}` as never)}
+              style={{
+                backgroundColor: index % 2 === 0 ? "#0f0f0f" : "#1a1a1a",
+                paddingVertical: 12,
+                paddingHorizontal: 12,
+                borderBottomWidth: index === products.length - 1 ? 0 : 1,
+                borderBottomColor: "#262626",
+                borderLeftWidth: 1,
+                borderLeftColor: "#262626",
+                borderRightWidth: 1,
+                borderRightColor: "#262626",
+                borderBottomLeftRadius: index === products.length - 1 ? 8 : 0,
+                borderBottomRightRadius: index === products.length - 1 ? 8 : 0,
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <View style={{ flex: 1 }}>
+                <Text
+                  style={{ fontSize: 14, fontWeight: "600", color: "#fafafa" }}
+                >
+                  {product.nama}
+                </Text>
+              </View>
+              <View
+                style={{
+                  width: 100,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <Text
+                  style={{ fontSize: 14, fontWeight: "600", color: "#fafafa" }}
+                >
+                  Rp {product.harga.toLocaleString("id-ID")}
+                </Text>
+                <MaterialCommunityIcons
+                  name="chevron-right"
+                  size={18}
+                  color="#a3a3a3"
+                />
+              </View>
+            </Pressable>
+          ))
+        ) : (
+          <View
+            style={{
+              backgroundColor: "#1a1a1a",
+              borderBottomLeftRadius: 8,
+              borderBottomRightRadius: 8,
+              borderWidth: 1,
+              borderColor: "#262626",
+              paddingVertical: 32,
+              alignItems: "center",
+            }}
+          >
+            <MaterialCommunityIcons
+              name="package-variant-closed"
+              size={32}
+              color="#a3a3a3"
+              style={{ marginBottom: 12 }}
+            />
+            <Text style={{ color: "#a3a3a3", fontSize: 14 }}>
+              Belum ada produk tersedia
+            </Text>
+          </View>
+        )}
+      </View>
     </ScrollView>
   );
 }
