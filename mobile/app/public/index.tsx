@@ -1,7 +1,7 @@
-import { View, Text, ScrollView } from 'react-native'
-import React, { useState } from 'react'
-import { API_PRODUK } from '@/scripts/api';
-import { useRouter } from 'expo-router';
+import { View, Text, ScrollView } from "react-native";
+import React, { useState } from "react";
+import { API_PRODUK } from "@/scripts/api";
+import { useRouter } from "expo-router";
 
 interface Produk {
   id: number;
@@ -51,7 +51,56 @@ export default function HomePage() {
 
   return (
     <ScrollView>
-      <Text>Public Page</Text>
+      {/* Header */}
+      <View
+        style={{
+          paddingVertical: 16,
+          paddingHorizontal: 16,
+          backgroundColor: "#111111",
+          borderBottomWidth: 1,
+          borderBottomColor: "#262626",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        {/* Logo and Brand */}
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Image
+            source={require("@/assets/images/logo.png")}
+            style={{ width: 40, height: 40, borderRadius: 6 }}
+            resizeMode="contain"
+          />
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: "bold",
+              color: "#fafafa",
+              marginLeft: 12,
+            }}
+          >
+            Ahmeng Trade
+          </Text>
+        </View>
+
+        {/* Login Button */}
+        <Pressable
+          onPress={() => router.push("./login")}
+          style={({ pressed }) => [
+            {
+              backgroundColor: pressed ? "#3b82f6" : "#2563eb",
+              paddingHorizontal: 20,
+              paddingVertical: 10,
+              borderRadius: 6,
+              opacity: pressed ? 0.8 : 1,
+            },
+          ]}
+        >
+          <Text style={{ fontSize: 16, fontWeight: "600", color: "#fafafa" }}>
+            Login
+          </Text>
+        </Pressable>
+      </View>
     </ScrollView>
-  )
+  );
 }
