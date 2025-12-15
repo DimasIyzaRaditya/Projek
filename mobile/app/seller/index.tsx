@@ -42,10 +42,11 @@ export default function SellerPage() {
       },
     ])
   }
-
+   if (!loading) {
   return (
     <View>
       <Text>index</Text>
     </View>
   )
+}
 }
