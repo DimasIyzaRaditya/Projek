@@ -52,6 +52,12 @@ const generateDescription = (nama: string) => {
 }
 
 export default function ProductDetailPage() {
+  // buat state
+  const router = useRouter()
+    const { id } = useLocalSearchParams()
+    const [product, setProduct] = useState<Produk | null>(null)
+    const [loading, setLoading] = useState(true)
+  
   return (
     <View>
       <Text>index</Text>
