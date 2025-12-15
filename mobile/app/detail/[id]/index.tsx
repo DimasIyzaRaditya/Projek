@@ -1,5 +1,5 @@
-import { View, Text } from "react-native";
-import React, { useState } from "react";
+import { View, Text, Alert, Pressable } from "react-native";
+import React, { useEffect, useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 
 interface Produk {
