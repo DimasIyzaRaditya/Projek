@@ -187,8 +187,243 @@ export default function ProductDetailPage() {
   }
 
   return (
-    <View>
-      <Text>index</Text>
-    </View>
+    <ScrollView style={{ flex: 1, backgroundColor: "#0a0a0a" }}>
+      {/* Back Button */}
+      <Pressable
+        onPress={() => router.back()}
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          paddingHorizontal: 16,
+          paddingVertical: 12,
+          marginVertical: 8,
+        }}
+      >
+        <MaterialCommunityIcons
+          name="arrow-left"
+          size={20}
+          color="#fafafa"
+          style={{ marginRight: 8 }}
+        />
+        <Text style={{ fontSize: 14, color: "#fafafa" }}>Kembali</Text>
+      </Pressable>
+
+      {/* Product Image */}
+      <View
+        style={{
+          aspectRatio: 16 / 9,
+          backgroundColor: "rgba(64, 64, 64, 0.5)",
+          justifyContent: "center",
+          alignItems: "center",
+          borderBottomWidth: 1,
+          borderBottomColor: "#262626",
+          marginBottom: 20,
+        }}
+      >
+        <MaterialCommunityIcons
+          name={getIconByTitle(product.nama) as any}
+          size={48}
+          color="#fafafa"
+        />
+      </View>
+
+      {/* Product Content */}
+      <View style={{ paddingHorizontal: 16, paddingBottom: 32 }}>
+        {/* Title & Rating */}
+        <View style={{ marginBottom: 24 }}>
+          <Text
+            style={{
+              fontSize: 24,
+              fontWeight: "bold",
+              color: "#fafafa",
+              marginBottom: 12,
+            }}
+          >
+            {product.nama}
+          </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginBottom: 16,
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginRight: 16,
+              }}
+            >
+              <MaterialCommunityIcons name="star" size={16} color="#eab308" />
+              <Text
+                style={{
+                  fontSize: 14,
+                  fontWeight: "600",
+                  color: "#fafafa",
+                  marginLeft: 4,
+                }}
+              >
+                {product.rating?.toFixed(1)}
+              </Text>
+            </View>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <MaterialCommunityIcons
+                name="download"
+                size={16}
+                color="#a3a3a3"
+              />
+              <Text style={{ fontSize: 14, color: "#a3a3a3", marginLeft: 4 }}>
+                {product.downloads?.toLocaleString("id-ID")} downloads
+              </Text>
+            </View>
+          </View>
+
+          {/* Price */}
+          <Text style={{ fontSize: 32, fontWeight: "bold", color: "#fafafa" }}>
+            Rp {product.harga.toLocaleString("id-ID")}
+          </Text>
+        </View>
+
+        {/* Description */}
+        <View
+          style={{
+            marginBottom: 32,
+            paddingBottom: 24,
+            borderBottomWidth: 1,
+            borderBottomColor: "#262626",
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: "600",
+              color: "#fafafa",
+              marginBottom: 12,
+            }}
+          >
+            Deskripsi Produk
+          </Text>
+          <Text style={{ fontSize: 14, color: "#a3a3a3", lineHeight: 22 }}>
+            {product.deskripsi}
+          </Text>
+        </View>
+
+        {/* Features */}
+        <View style={{ marginBottom: 32 }}>
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: "600",
+              color: "#fafafa",
+              marginBottom: 12,
+            }}
+          >
+            Apa yang Anda Dapatkan
+          </Text>
+          <View style={{ gap: 8 }}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View
+                style={{
+                  width: 6,
+                  height: 6,
+                  borderRadius: 3,
+                  backgroundColor: "#10b981",
+                  marginRight: 10,
+                }}
+              />
+              <Text style={{ fontSize: 14, color: "#a3a3a3" }}>
+                Instant download
+              </Text>
+            </View>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View
+                style={{
+                  width: 6,
+                  height: 6,
+                  borderRadius: 3,
+                  backgroundColor: "#10b981",
+                  marginRight: 10,
+                }}
+              />
+              <Text style={{ fontSize: 14, color: "#a3a3a3" }}>
+                Lifetime access
+              </Text>
+            </View>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View
+                style={{
+                  width: 6,
+                  height: 6,
+                  borderRadius: 3,
+                  backgroundColor: "#10b981",
+                  marginRight: 10,
+                }}
+              />
+              <Text style={{ fontSize: 14, color: "#a3a3a3" }}>
+                Free updates
+              </Text>
+            </View>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View
+                style={{
+                  width: 6,
+                  height: 6,
+                  borderRadius: 3,
+                  backgroundColor: "#10b981",
+                  marginRight: 10,
+                }}
+              />
+              <Text style={{ fontSize: 14, color: "#a3a3a3" }}>
+                Money back guarantee
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Action Buttons */}
+        <View style={{ gap: 12 }}>
+          <Pressable
+            style={{
+              backgroundColor: "#fafafa",
+              paddingVertical: 14,
+              borderRadius: 6,
+              alignItems: "center",
+              flexDirection: "row",
+              justifyContent: "center",
+            }}
+            onPress={() =>
+              Alert.alert("Info", "Fitur pembelian belum tersedia")
+            }
+          >
+            <MaterialCommunityIcons
+              name="cart"
+              size={18}
+              color="#0a0a0a"
+              style={{ marginRight: 8 }}
+            />
+            <Text style={{ fontSize: 14, fontWeight: "600", color: "#0a0a0a" }}>
+              Beli Sekarang
+            </Text>
+          </Pressable>
+          <Pressable
+            style={{
+              borderWidth: 1,
+              borderColor: "#404040",
+              paddingVertical: 14,
+              borderRadius: 6,
+              alignItems: "center",
+            }}
+            onPress={() =>
+              Alert.alert("Info", "Fitur keranjang belum tersedia")
+            }
+          >
+            <Text style={{ fontSize: 14, fontWeight: "600", color: "#fafafa" }}>
+              Tambah ke Keranjang
+            </Text>
+          </Pressable>
+        </View>
+      </View>
+    </ScrollView>
   );
 }
