@@ -38,7 +38,7 @@ export default function Landingpage() {
         kebutuhan Anda
       </Text>
 
-        {/* CTA Buttons */}
+ {/* CTA Buttons */}
         <View style={{ gap: 12, width: '100%', maxWidth: 320 }}>
           <Pressable
             onPress={() => router.push('/public' as never)}
@@ -52,6 +52,20 @@ export default function Landingpage() {
           >
             <Text style={{ fontSize: 16, fontWeight: '600', color: '#0a0a0a' }}>Mulai Belanja</Text>
           </Pressable>
+
+          <Pressable
+            onPress={() => router.push('/login' as never)}
+            style={{
+              borderWidth: 1,
+              borderColor: '#fafafa',
+              paddingVertical: 14,
+              borderRadius: 8,
+              alignItems: 'center',
+            }}
+          >
+            <Text style={{ fontSize: 16, fontWeight: '600', color: '#fafafa' }}>Login Admin/Seller</Text>
+          </Pressable>
+        </View>
     </View>
   );
 }
