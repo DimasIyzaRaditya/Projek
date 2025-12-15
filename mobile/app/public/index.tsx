@@ -1,7 +1,8 @@
-import { View, Text, ScrollView, Image, Pressable } from "react-native";
+import { View, Text, ScrollView, Image, Pressable, TextInput } from "react-native";
 import React, { useState } from "react";
 import { API_PRODUK } from "@/scripts/api";
 import { useRouter } from "expo-router";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 interface Produk {
   id: number;
