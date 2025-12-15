@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import { API_PRODUK } from '@/scripts/api';
 import { useRouter } from 'expo-router';
@@ -50,8 +50,8 @@ export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <View>
-      <Text>HomePage</Text>
-    </View>
+    <ScrollView>
+      <Text>Public Page</Text>
+    </ScrollView>
   )
 }
