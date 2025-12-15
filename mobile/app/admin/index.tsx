@@ -13,6 +13,16 @@ export default function AdminPage() {
 
     checkAuth();
   }, []);
+
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem("user");
+      router.replace("/");
+    } catch (error) {
+      console.log("Logout error:", error);
+    }
+  };
+
   return (
     <View>
       <Text>index</Text>
