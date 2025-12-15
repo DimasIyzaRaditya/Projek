@@ -79,40 +79,201 @@ export default function Landingpage() {
         </View>
       </View>
       {/* Features Section */}
-      <View style={{ paddingVertical: 40, paddingHorizontal: 16, backgroundColor: '#111111' }}>
-        <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#fafafa', textAlign: 'center', marginBottom: 24 }}>
+      <View
+        style={{
+          paddingVertical: 40,
+          paddingHorizontal: 16,
+          backgroundColor: "#111111",
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 20,
+            fontWeight: "bold",
+            color: "#fafafa",
+            textAlign: "center",
+            marginBottom: 24,
+          }}
+        >
           Mengapa Memilih Kami?
         </Text>
 
-        <View style={{ gap: 16 }}>
+        <View style={{ gap: 16 }}></View>
 
-          </View>
-
-          <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-            <MaterialCommunityIcons name="lightning-bolt" size={24} color="#10b981" style={{ marginRight: 16, marginTop: 4 }} />
-            <View style={{ flex: 1 }}>
-              <Text style={{ fontSize: 14, fontWeight: '600', color: '#fafafa', marginBottom: 4 }}>Download Instan</Text>
-              <Text style={{ fontSize: 12, color: '#a3a3a3', lineHeight: 18 }}>Dapatkan akses instan setelah pembayaran berhasil</Text>
-            </View>
-          </View>
-
-          <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-            <MaterialCommunityIcons name="heart" size={24} color="#10b981" style={{ marginRight: 16, marginTop: 4 }} />
-            <View style={{ flex: 1 }}>
-              <Text style={{ fontSize: 14, fontWeight: '600', color: '#fafafa', marginBottom: 4 }}>Seumur Hidup</Text>
-              <Text style={{ fontSize: 12, color: '#a3a3a3', lineHeight: 18 }}>Akses selamanya dengan update gratis selamanya</Text>
-            </View>
-          </View>
-
-          <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-            <MaterialCommunityIcons name="headset" size={24} color="#10b981" style={{ marginRight: 16, marginTop: 4 }} />
-            <View style={{ flex: 1 }}>
-              <Text style={{ fontSize: 14, fontWeight: '600', color: '#fafafa', marginBottom: 4 }}>Support 24/7</Text>
-              <Text style={{ fontSize: 12, color: '#a3a3a3', lineHeight: 18 }}>Tim support siap membantu Anda kapan saja</Text>
-            </View>
+        <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
+          <MaterialCommunityIcons
+            name="lightning-bolt"
+            size={24}
+            color="#10b981"
+            style={{ marginRight: 16, marginTop: 4 }}
+          />
+          <View style={{ flex: 1 }}>
+            <Text
+              style={{
+                fontSize: 14,
+                fontWeight: "600",
+                color: "#fafafa",
+                marginBottom: 4,
+              }}
+            >
+              Download Instan
+            </Text>
+            <Text style={{ fontSize: 12, color: "#a3a3a3", lineHeight: 18 }}>
+              Dapatkan akses instan setelah pembayaran berhasil
+            </Text>
           </View>
         </View>
-      
+
+        <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
+          <MaterialCommunityIcons
+            name="heart"
+            size={24}
+            color="#10b981"
+            style={{ marginRight: 16, marginTop: 4 }}
+          />
+          <View style={{ flex: 1 }}>
+            <Text
+              style={{
+                fontSize: 14,
+                fontWeight: "600",
+                color: "#fafafa",
+                marginBottom: 4,
+              }}
+            >
+              Seumur Hidup
+            </Text>
+            <Text style={{ fontSize: 12, color: "#a3a3a3", lineHeight: 18 }}>
+              Akses selamanya dengan update gratis selamanya
+            </Text>
+          </View>
+        </View>
+
+        <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
+          <MaterialCommunityIcons
+            name="headset"
+            size={24}
+            color="#10b981"
+            style={{ marginRight: 16, marginTop: 4 }}
+          />
+          <View style={{ flex: 1 }}>
+            <Text
+              style={{
+                fontSize: 14,
+                fontWeight: "600",
+                color: "#fafafa",
+                marginBottom: 4,
+              }}
+            >
+              Support 24/7
+            </Text>
+            <Text style={{ fontSize: 12, color: "#a3a3a3", lineHeight: 18 }}>
+              Tim support siap membantu Anda kapan saja
+            </Text>
+          </View>
+        </View>
+      </View>
+
+      {/* Stats Section */}
+      <View
+        style={{
+          paddingVertical: 40,
+          paddingHorizontal: 16,
+          backgroundColor: "#0a0a0a",
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 20,
+            fontWeight: "bold",
+            color: "#fafafa",
+            textAlign: "center",
+            marginBottom: 24,
+          }}
+        >
+          Statistik Kami
+        </Text>
+
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-around",
+            flexWrap: "wrap",
+            gap: 16,
+          }}
+        >
+          <View style={{ alignItems: "center", flex: 1, minWidth: "45%" }}>
+            <Text
+              style={{ fontSize: 28, fontWeight: "bold", color: "#fafafa" }}
+            >
+              10K+
+            </Text>
+            <Text
+              style={{
+                fontSize: 12,
+                color: "#a3a3a3",
+                marginTop: 8,
+                textAlign: "center",
+              }}
+            >
+              Total Download
+            </Text>
+          </View>
+
+          <View style={{ alignItems: "center", flex: 1, minWidth: "45%" }}>
+            <Text
+              style={{ fontSize: 28, fontWeight: "bold", color: "#fafafa" }}
+            >
+              500+
+            </Text>
+            <Text
+              style={{
+                fontSize: 12,
+                color: "#a3a3a3",
+                marginTop: 8,
+                textAlign: "center",
+              }}
+            >
+              Produk Digital
+            </Text>
+          </View>
+
+          <View style={{ alignItems: "center", flex: 1, minWidth: "45%" }}>
+            <Text
+              style={{ fontSize: 28, fontWeight: "bold", color: "#fafafa" }}
+            >
+              4.8/5
+            </Text>
+            <Text
+              style={{
+                fontSize: 12,
+                color: "#a3a3a3",
+                marginTop: 8,
+                textAlign: "center",
+              }}
+            >
+              Rating Pelanggan
+            </Text>
+          </View>
+
+          <View style={{ alignItems: "center", flex: 1, minWidth: "45%" }}>
+            <Text
+              style={{ fontSize: 28, fontWeight: "bold", color: "#fafafa" }}
+            >
+              100+
+            </Text>
+            <Text
+              style={{
+                fontSize: 12,
+                color: "#a3a3a3",
+                marginTop: 8,
+                textAlign: "center",
+              }}
+            >
+              Seller Aktif
+            </Text>
+          </View>
+        </View>
+      </View>
     </ScrollView>
   );
 }
