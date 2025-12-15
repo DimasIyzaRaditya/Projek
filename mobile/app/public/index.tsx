@@ -465,6 +465,67 @@ export default function HomePage() {
           </View>
         )}
       </View>
+
+      {/* Footer */}
+      <View
+        style={{
+          borderTopWidth: 1,
+          borderTopColor: "#262626",
+          backgroundColor: "#0a0a0a",
+          paddingVertical: 24,
+          paddingHorizontal: 16,
+        }}
+      >
+        <View style={{ marginBottom: 20 }}>
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: "600",
+              color: "#fafafa",
+              marginBottom: 8,
+            }}
+          >
+            DigitalMarket
+          </Text>
+          <Text style={{ fontSize: 12, color: "#a3a3a3" }}>
+            Platform jual beli file digital terpercaya di Indonesia
+          </Text>
+        </View>
+        <View style={{ marginBottom: 20 }}>
+          <Text
+            style={{
+              fontSize: 14,
+              fontWeight: "600",
+              color: "#fafafa",
+              marginBottom: 8,
+            }}
+          >
+            Produk
+          </Text>
+          <Text style={{ fontSize: 12, color: "#a3a3a3", marginBottom: 4 }}>
+            Template
+          </Text>
+          <Text style={{ fontSize: 12, color: "#a3a3a3", marginBottom: 4 }}>
+            E-Book
+          </Text>
+          <Text style={{ fontSize: 12, color: "#a3a3a3", marginBottom: 4 }}>
+            Source Code
+          </Text>
+          <Text style={{ fontSize: 12, color: "#a3a3a3" }}>Assets</Text>
+        </View>
+        <Text
+          style={{
+            fontSize: 12,
+            color: "#a3a3a3",
+            textAlign: "center",
+            borderTopWidth: 1,
+            borderTopColor: "#262626",
+            paddingTop: 20,
+          }}
+        >
+          © 2025 Ahmeng Trade. All rights reserved.
+        </Text>
+      </View>
     </ScrollView>
   );
 }
