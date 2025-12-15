@@ -101,6 +101,65 @@ export default function HomePage() {
           </Text>
         </Pressable>
       </View>
+      {/* Main Section */}
+      {/* Search Input */}
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          backgroundColor: "#1a1a1a",
+          borderWidth: 1,
+          borderColor: "#404040",
+          borderRadius: 8,
+          paddingHorizontal: 12,
+          paddingVertical: 8,
+        }}
+      >
+        <MaterialCommunityIcons name="magnify" size={20} color="#a3a3a3" />
+        <TextInput
+          placeholder="Cari produk digital..."
+          placeholderTextColor="#666666"
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          style={{
+            flex: 1,
+            marginLeft: 12,
+            fontSize: 14,
+            color: "#fafafa",
+            paddingVertical: 8,
+          }}
+        />
+      </View>
+      <View
+        style={{
+          paddingVertical: 40,
+          paddingHorizontal: 16,
+          backgroundColor: "#0a0a0a",
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 28,
+            fontWeight: "bold",
+            color: "#fafafa",
+            textAlign: "center",
+            marginBottom: 16,
+          }}
+        >
+          Marketplace File Digital
+        </Text>
+        <Text
+          style={{
+            fontSize: 16,
+            color: "#a3a3a3",
+            textAlign: "center",
+            marginBottom: 24,
+          }}
+        >
+          Koleksi pribadi template, ebook, source code, dan aset digital untuk
+          mereka yang berbagi minat yang sama
+        </Text>
+      </View>
     </ScrollView>
   );
 }
