@@ -6,6 +6,13 @@ export default function AdminPage() {
   // buat state
   const router = useRouter();
   const [loading, setLoading] = React.useState(true);
+    useEffect(() => {
+    const checkAuth = async () => {
+      setLoading(false);
+    };
+
+    checkAuth();
+  }, []);
   return (
     <View>
       <Text>index</Text>
