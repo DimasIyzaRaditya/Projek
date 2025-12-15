@@ -49,8 +49,6 @@ export default function HomePage() {
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
-
-export default function HomePage() {
   return (
     <View>
       <Text>HomePage</Text>
