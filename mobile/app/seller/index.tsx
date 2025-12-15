@@ -1,4 +1,4 @@
-import { View, Text, Alert } from "react-native";
+import { View, Text, Alert, ScrollView } from "react-native";
 import React, { useEffect } from "react";
 import { useRouter } from "expo-router";
 
