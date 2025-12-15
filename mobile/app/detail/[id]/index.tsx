@@ -1,5 +1,6 @@
 import { View, Text } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 
 interface Produk {
   id: number
