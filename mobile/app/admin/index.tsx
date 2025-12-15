@@ -2,6 +2,7 @@ import { View, Text, ScrollView, Pressable } from 'react-native'
 import React, { useEffect } from 'react'
 import { useRouter } from 'expo-router';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function AdminPage() {
   // buat state
