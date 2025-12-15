@@ -1,6 +1,7 @@
 import { View, Text, Pressable, Image, ScrollView } from "react-native";
 import React from "react";
 import { useRouter } from "expo-router";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function Landingpage() {
   const router = useRouter();
@@ -77,6 +78,41 @@ export default function Landingpage() {
           </Pressable>
         </View>
       </View>
+      {/* Features Section */}
+      <View style={{ paddingVertical: 40, paddingHorizontal: 16, backgroundColor: '#111111' }}>
+        <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#fafafa', textAlign: 'center', marginBottom: 24 }}>
+          Mengapa Memilih Kami?
+        </Text>
+
+        <View style={{ gap: 16 }}>
+
+          </View>
+
+          <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+            <MaterialCommunityIcons name="lightning-bolt" size={24} color="#10b981" style={{ marginRight: 16, marginTop: 4 }} />
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontSize: 14, fontWeight: '600', color: '#fafafa', marginBottom: 4 }}>Download Instan</Text>
+              <Text style={{ fontSize: 12, color: '#a3a3a3', lineHeight: 18 }}>Dapatkan akses instan setelah pembayaran berhasil</Text>
+            </View>
+          </View>
+
+          <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+            <MaterialCommunityIcons name="heart" size={24} color="#10b981" style={{ marginRight: 16, marginTop: 4 }} />
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontSize: 14, fontWeight: '600', color: '#fafafa', marginBottom: 4 }}>Seumur Hidup</Text>
+              <Text style={{ fontSize: 12, color: '#a3a3a3', lineHeight: 18 }}>Akses selamanya dengan update gratis selamanya</Text>
+            </View>
+          </View>
+
+          <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+            <MaterialCommunityIcons name="headset" size={24} color="#10b981" style={{ marginRight: 16, marginTop: 4 }} />
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontSize: 14, fontWeight: '600', color: '#fafafa', marginBottom: 4 }}>Support 24/7</Text>
+              <Text style={{ fontSize: 12, color: '#a3a3a3', lineHeight: 18 }}>Tim support siap membantu Anda kapan saja</Text>
+            </View>
+          </View>
+        </View>
+      
     </ScrollView>
   );
 }
