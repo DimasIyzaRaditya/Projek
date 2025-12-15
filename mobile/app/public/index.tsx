@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Image, Pressable } from "react-native";
 import React, { useState } from "react";
 import { API_PRODUK } from "@/scripts/api";
 import { useRouter } from "expo-router";
