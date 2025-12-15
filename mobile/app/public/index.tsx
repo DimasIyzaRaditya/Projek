@@ -1,4 +1,11 @@
-import { View, Text, ScrollView, Image, Pressable, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  Pressable,
+  TextInput,
+} from "react-native";
 import React, { useState } from "react";
 import { API_PRODUK } from "@/scripts/api";
 import { useRouter } from "expo-router";
@@ -160,6 +167,94 @@ export default function HomePage() {
           Koleksi pribadi template, ebook, source code, dan aset digital untuk
           mereka yang berbagi minat yang sama
         </Text>
+      </View>
+
+      {/* Stats Section */}
+      <View
+        style={{
+          paddingVertical: 20,
+          paddingHorizontal: 16,
+          backgroundColor: "#0a0a0a",
+          borderTopWidth: 1,
+          borderTopColor: "#262626",
+        }}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-around",
+            flexWrap: "wrap",
+          }}
+        >
+          <View style={{ alignItems: "center", marginBottom: 16 }}>
+            <MaterialCommunityIcons name="download" size={24} color="#a3a3a3" />
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: "bold",
+                color: "#fafafa",
+                marginTop: 8,
+              }}
+            >
+              10K+
+            </Text>
+            <Text style={{ fontSize: 12, color: "#a3a3a3", marginTop: 4 }}>
+              Total Download
+            </Text>
+          </View>
+          <View style={{ alignItems: "center", marginBottom: 16 }}>
+            <MaterialCommunityIcons
+              name="trending-up"
+              size={24}
+              color="#a3a3a3"
+            />
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: "bold",
+                color: "#fafafa",
+                marginTop: 8,
+              }}
+            >
+              500+
+            </Text>
+            <Text style={{ fontSize: 12, color: "#a3a3a3", marginTop: 4 }}>
+              Produk Digital
+            </Text>
+          </View>
+          <View style={{ alignItems: "center", marginBottom: 16 }}>
+            <MaterialCommunityIcons name="star" size={24} color="#a3a3a3" />
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: "bold",
+                color: "#fafafa",
+                marginTop: 8,
+              }}
+            >
+              4.8
+            </Text>
+            <Text style={{ fontSize: 12, color: "#a3a3a3", marginTop: 4 }}>
+              Rating Rata-rata
+            </Text>
+          </View>
+          <View style={{ alignItems: "center", marginBottom: 16 }}>
+            <MaterialCommunityIcons name="trophy" size={24} color="#a3a3a3" />
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: "bold",
+                color: "#fafafa",
+                marginTop: 8,
+              }}
+            >
+              100+
+            </Text>
+            <Text style={{ fontSize: 12, color: "#a3a3a3", marginTop: 4 }}>
+              Penjual Terpercaya
+            </Text>
+          </View>
+        </View>
       </View>
     </ScrollView>
   );
