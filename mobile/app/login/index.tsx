@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import React, { useState } from "react";
 import { useRouter } from "expo-router";
 import { API_AUTH_LOGIN } from "@/scripts/api";
@@ -76,8 +76,7 @@ export default function LoginPage() {
   };
 
   return (
-    <View>
-      <Text>index</Text>
-    </View>
+    <ScrollView>
+    </ScrollView>
   );
 }
