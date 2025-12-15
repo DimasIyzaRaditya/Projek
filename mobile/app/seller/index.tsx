@@ -1,6 +1,7 @@
 import { View, Text, Alert, ScrollView, Pressable } from "react-native";
 import React, { useEffect } from "react";
 import { useRouter } from "expo-router";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function SellerPage() {
   // buat state
