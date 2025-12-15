@@ -3,8 +3,6 @@ import React from 'react'
 
 export default function PublicLayout() {
   return (
-    <View>
-      <Text>_layout</Text>
-    </View>
+
   )
 }
