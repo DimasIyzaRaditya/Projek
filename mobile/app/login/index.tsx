@@ -76,7 +76,8 @@ export default function LoginPage() {
   };
 
   return (
-    <ScrollView>
+    <ScrollView style={{ flex: 1, backgroundColor: '#0a0a0a' }} contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', minHeight: '100%', paddingHorizontal: 16 }}>
+      
     </ScrollView>
   );
 }
