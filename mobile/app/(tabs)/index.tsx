@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, Image } from "react-native";
 import React from "react";
 import { useRouter } from "expo-router";
 
@@ -14,6 +14,11 @@ export default function Landingpage() {
         justifyContent: "center",
       }}
     >
+      <Image
+        source={require("@/assets/images/logo.png")}
+        style={{ width: 180, height: 180, marginBottom: 24 }}
+        resizeMode="contain"
+      />
       <Text
         style={{
           fontSize: 32,
@@ -38,34 +43,38 @@ export default function Landingpage() {
         kebutuhan Anda
       </Text>
 
- {/* CTA Buttons */}
-        <View style={{ gap: 12, width: '100%', maxWidth: 320 }}>
-          <Pressable
-            onPress={() => router.push('/public' as never)}
-            style={{
-              backgroundColor: '#fafafa',
-              paddingVertical: 14,
-              borderRadius: 8,
-              alignItems: 'center',
-              marginBottom: 12,
-            }}
-          >
-            <Text style={{ fontSize: 16, fontWeight: '600', color: '#0a0a0a' }}>Mulai Belanja</Text>
-          </Pressable>
+      {/* CTA Buttons */}
+      <View style={{ gap: 12, width: "100%", maxWidth: 320 }}>
+        <Pressable
+          onPress={() => router.push("/public" as never)}
+          style={{
+            backgroundColor: "#fafafa",
+            paddingVertical: 14,
+            borderRadius: 8,
+            alignItems: "center",
+            marginBottom: 12,
+          }}
+        >
+          <Text style={{ fontSize: 16, fontWeight: "600", color: "#0a0a0a" }}>
+            Mulai Belanja
+          </Text>
+        </Pressable>
 
-          <Pressable
-            onPress={() => router.push('/login' as never)}
-            style={{
-              borderWidth: 1,
-              borderColor: '#fafafa',
-              paddingVertical: 14,
-              borderRadius: 8,
-              alignItems: 'center',
-            }}
-          >
-            <Text style={{ fontSize: 16, fontWeight: '600', color: '#fafafa' }}>Login Admin/Seller</Text>
-          </Pressable>
-        </View>
+        <Pressable
+          onPress={() => router.push("/login" as never)}
+          style={{
+            borderWidth: 1,
+            borderColor: "#fafafa",
+            paddingVertical: 14,
+            borderRadius: 8,
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ fontSize: 16, fontWeight: "600", color: "#fafafa" }}>
+            Login Admin/Seller
+          </Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
