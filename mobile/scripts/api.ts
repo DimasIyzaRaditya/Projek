@@ -12,3 +12,6 @@ export const API_TRANSAKSI_BY_ID = (id: number) => `${API_AHMENG}/transaksi/${id
 // Endpoint User
 export const API_USER = `${API_AHMENG}/user`;
 export const API_USER_BY_ID = (id: number) => `${API_AHMENG}/user/${id}`;
+
+// Endpoint Auth
+export const API_AUTH_LOGIN = `${API_AHMENG}/auth/login`;
