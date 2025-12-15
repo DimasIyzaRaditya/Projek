@@ -274,6 +274,30 @@ export default function Landingpage() {
           </View>
         </View>
       </View>
+      <View
+        style={{
+          borderTopWidth: 1,
+          borderTopColor: "#262626",
+          backgroundColor: "#0a0a0a",
+          paddingVertical: 48,
+          paddingHorizontal: 16,
+        }}
+      >
+        {/* Footer Bottom */}
+        <View
+          style={{
+            marginTop: 32,
+            borderTopWidth: 1,
+            borderTopColor: "#262626",
+            paddingTop: 32,
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ fontSize: 13, color: "#a3a3a3", textAlign: "center" }}>
+            © 2025 Ahmeng Trade. All rights reserved.
+          </Text>
+        </View>
+      </View>
     </ScrollView>
   );
 }
