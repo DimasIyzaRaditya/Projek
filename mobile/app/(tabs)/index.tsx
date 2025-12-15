@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import React from "react";
 import { useRouter } from "expo-router";
 
@@ -37,6 +37,21 @@ export default function Landingpage() {
         Koleksi pribadi template, ebook, source code, dan aset digital untuk
         kebutuhan Anda
       </Text>
+
+        {/* CTA Buttons */}
+        <View style={{ gap: 12, width: '100%', maxWidth: 320 }}>
+          <Pressable
+            onPress={() => router.push('/public' as never)}
+            style={{
+              backgroundColor: '#fafafa',
+              paddingVertical: 14,
+              borderRadius: 8,
+              alignItems: 'center',
+              marginBottom: 12,
+            }}
+          >
+            <Text style={{ fontSize: 16, fontWeight: '600', color: '#0a0a0a' }}>Mulai Belanja</Text>
+          </Pressable>
     </View>
   );
 }
