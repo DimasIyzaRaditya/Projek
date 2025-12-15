@@ -29,6 +29,20 @@ export default function SellerPage() {
     checkAuth()
   }, [])
 
+  const handleLogout = () => {
+    Alert.alert("Logout", "Apakah Anda yakin ingin logout?", [
+      { text: "Batal", onPress: () => {} },
+      {
+        text: "Logout",
+        onPress: async () => {
+          // import AsyncStorage from '@react-native-async-storage/async-storage'
+          // await AsyncStorage.removeItem("user")
+          router.push('/(public)' as never)
+        },
+      },
+    ])
+  }
+  
   return (
     <View>
       <Text>index</Text>
