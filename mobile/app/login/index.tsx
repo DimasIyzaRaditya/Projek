@@ -10,6 +10,12 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [userRole, setUserRole] = useState<"admin" | "seller" | null>(null);
+  const handleLogin = async () => {
+    if (!username.trim() || !password.trim()) {
+      setError("Username dan password harus diisi")
+      return
+    }
+
 
   return (
     <View>
