@@ -1,6 +1,7 @@
 import { View, Text } from "react-native";
 import React, { useState } from "react";
 import { useRouter } from "expo-router";
+import { API_AUTH_LOGIN } from "@/scripts/api";
 
 export default function LoginPage() {
   // buat state
@@ -10,7 +11,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [userRole, setUserRole] = useState<"admin" | "seller" | null>(null);
-  
+
   const handleLogin = async () => {
     if (!username.trim() || !password.trim()) {
       setError("Username dan password harus diisi");
