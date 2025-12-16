@@ -2,6 +2,7 @@ import { View, Text, Alert, ScrollView, Pressable } from "react-native";
 import React, { useEffect } from "react";
 import { useRouter } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function SellerPage() {
   // buat state
@@ -29,19 +30,13 @@ export default function SellerPage() {
 
     checkAuth();
   }, []);
-
-  const handleLogout = () => {
-    Alert.alert("Logout", "Apakah Anda yakin ingin logout?", [
-      { text: "Batal", onPress: () => {} },
-      {
-        text: "Logout",
-        onPress: async () => {
-          // import AsyncStorage from '@react-native-async-storage/async-storage'
-          // await AsyncStorage.removeItem("user")
-          router.push("/(public)" as never);
-        },
-      },
-    ]);
+const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem("user");
+      router.replace("/");
+    } catch (error) {
+      console.log("Logout error:", error);
+    }
   };
   if (!loading) {
     return (
