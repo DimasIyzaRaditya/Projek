@@ -1,8 +1,29 @@
-import { View, Text, Alert, ScrollView, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  Alert,
+  ScrollView,
+  Pressable,
+  Modal,
+  ActivityIndicator,
+} from "react-native";
 import React, { useEffect } from "react";
 import { useRouter } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  colors,
+  commonStyles,
+  headerStyles,
+  cardStyles,
+  tableStyles,
+  buttonStyles,
+  modalStyles,
+  sectionStyles,
+  spacing,
+  typography,
+  borderRadius,
+} from "@/app/styles";
 
 type Produk = {
   id?: number;
@@ -14,6 +35,9 @@ export default function SellerPage() {
   const router = useRouter();
   const [loading, setLoading] = React.useState(true);
   const [produkList, setProdukList] = React.useState<Produk[]>([]);
+  const [deleteModalVisible, setDeleteModalVisible] = React.useState(false);
+  const [productToDelete, setProductToDelete] = React.useState<number | null>(null);
+  const [deleting, setDeleting] = React.useState(false);
 
   useEffect(() => {
     fetchProduk();
@@ -40,360 +64,263 @@ export default function SellerPage() {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    Alert.alert(
-      "Konfirmasi Hapus",
-      "Apakah Anda yakin ingin menghapus produk ini?",
-      [
-        { text: "Batal", style: "cancel" },
-        {
-          text: "Hapus",
-          style: "destructive",
-          onPress: async () => {
-            try {
-              const res = await fetch(`http://localhost:3000/api/produk/${id}`, {
-                method: "DELETE",
-              });
-              if (res.ok) {
-                Alert.alert("Sukses", "Produk berhasil dihapus");
-                fetchProduk();
-              } else {
-                Alert.alert("Error", "Gagal menghapus produk");
-              }
-            } catch (e) {
-              Alert.alert("Error", "Terjadi kesalahan");
-            }
-          },
-        },
-      ]
-    );
+  const handleDelete = (id: number) => {
+    console.log("handleDelete called with id:", id);
+    setProductToDelete(id);
+    setDeleteModalVisible(true);
+  };
+
+  const confirmDelete = async () => {
+    if (productToDelete === null) return;
+
+    console.log("Attempting to delete product with id:", productToDelete);
+    setDeleting(true);
+
+    try {
+      const res = await fetch(`http://localhost:3000/api/produk/${productToDelete}`, {
+        method: "DELETE",
+      });
+      console.log("Delete response status:", res.status);
+
+      if (res.ok) {
+        console.log("Delete successful!");
+        setDeleteModalVisible(false);
+        setProductToDelete(null);
+        Alert.alert("Sukses", "Produk berhasil dihapus");
+        fetchProduk();
+      } else {
+        const errorData = await res.json();
+        console.log("Delete error:", errorData);
+        Alert.alert("Error", errorData.error || "Gagal menghapus produk");
+      }
+    } catch (e) {
+      console.log("Delete exception:", e);
+      Alert.alert("Error", "Terjadi kesalahan: " + String(e));
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const cancelDelete = () => {
+    setDeleteModalVisible(false);
+    setProductToDelete(null);
   };
 
   return (
-      <ScrollView style={{ flex: 1, backgroundColor: "#0a0a0a" }}>
-        {/* Header */}
-        <View
-          style={{
-            paddingVertical: 24,
-            paddingHorizontal: 16,
-            borderBottomWidth: 1,
-            borderBottomColor: "#262626",
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: 8,
-            }}
-          >
-            <Text
-              style={{ fontSize: 28, fontWeight: "bold", color: "#fafafa" }}
-            >
-              Dashboard Seller
-            </Text>
-            <Pressable
-              onPress={handleLogout}
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                borderWidth: 1,
-                borderColor: "#404040",
-                backgroundColor: "#1f1f1f",
-                paddingHorizontal: 12,
-                paddingVertical: 8,
-                borderRadius: 6,
-              }}
-            >
-              <MaterialCommunityIcons
-                name="logout"
-                size={16}
-                color="#fafafa"
-                style={{ marginRight: 6 }}
-              />
-              <Text
-                style={{ fontSize: 12, fontWeight: "600", color: "#fafafa" }}
-              >
-                Logout
-              </Text>
-            </Pressable>
+    <ScrollView style={commonStyles.container}>
+      {/* Header */}
+      <View style={headerStyles.container}>
+        <View style={[commonStyles.flexRowBetween, { marginBottom: spacing.md }]}>
+          <Text style={headerStyles.title}>Dashboard Seller</Text>
+          <Pressable onPress={handleLogout} style={buttonStyles.secondary}>
+            <MaterialCommunityIcons
+              name="logout"
+              size={16}
+              color={colors.text.primary}
+              style={{ marginRight: spacing.sm }}
+            />
+            <Text style={buttonStyles.secondaryText}>Logout</Text>
+          </Pressable>
+        </View>
+        <Text style={headerStyles.subtitle}>Selamat datang, Seller</Text>
+      </View>
+
+      {/* Stats Cards */}
+      <View style={sectionStyles.container}>
+        <View style={cardStyles.container}>
+          <View style={cardStyles.header}>
+            <Text style={cardStyles.title}>Total Produk</Text>
+            <MaterialCommunityIcons
+              name="package-variant"
+              size={16}
+              color={colors.text.secondary}
+            />
           </View>
-          <Text style={{ fontSize: 14, color: "#a3a3a3" }}>
-            Selamat datang, Seller
+          <Text style={cardStyles.value}>{produkList.length}</Text>
+          <Text style={cardStyles.description}>Produk yang tersedia</Text>
+        </View>
+      </View>
+
+      {/* Tabel Produk */}
+      <View style={{ padding: spacing.lg }}>
+        <View style={sectionStyles.header}>
+          <Text style={sectionStyles.headerTitle}>Kelola Produk</Text>
+          <Pressable
+            onPress={() => Alert.alert("Info", "Fitur tambah produk segera hadir")}
+            style={[buttonStyles.primary, { paddingHorizontal: spacing.lg, paddingVertical: spacing.md }]}
+          >
+            <MaterialCommunityIcons
+              name="plus"
+              size={16}
+              color={colors.background.primary}
+              style={{ marginRight: spacing.xs }}
+            />
+            <Text style={buttonStyles.primaryText}>Tambah</Text>
+          </Pressable>
+        </View>
+
+        {/* Table Header */}
+        <View style={tableStyles.header}>
+          <Text style={[tableStyles.headerText, { width: 50 }]}>ID</Text>
+          <Text style={[tableStyles.headerText, { flex: 1 }]}>Nama Produk</Text>
+          <Text style={[tableStyles.headerText, { width: 100, textAlign: "right" }]}>
+            Harga
+          </Text>
+          <Text style={[tableStyles.headerText, { width: 100, textAlign: "center" }]}>
+            Aksi
           </Text>
         </View>
 
-        {/* Stats Cards */}
-        <View style={{ paddingVertical: 20, paddingHorizontal: 16 }}>
-          {/* Produk Saya */}
-          <View
-            style={{
-              backgroundColor: "rgba(23, 23, 23, 0.5)",
-              borderWidth: 1,
-              borderColor: "#262626",
-              borderRadius: 8,
-              padding: 16,
-              marginBottom: 16,
-            }}
-          >
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
-                marginBottom: 12,
-              }}
-            >
-              <Text
-                style={{ fontSize: 14, fontWeight: "500", color: "#fafafa" }}
-              >
-                Total Produk
-              </Text>
-              <MaterialCommunityIcons
-                name="package-variant"
-                size={16}
-                color="#a3a3a3"
-              />
-            </View>
-            <Text
-              style={{
-                fontSize: 24,
-                fontWeight: "bold",
-                color: "#fafafa",
-                marginBottom: 4,
-              }}
-            >
-              {produkList.length}
-            </Text>
-            <Text style={{ fontSize: 12, color: "#a3a3a3" }}>
-              Produk yang tersedia
-            </Text>
+        {/* Table Body */}
+        {loading ? (
+          <View style={tableStyles.loadingState}>
+            <MaterialCommunityIcons
+              name="loading"
+              size={32}
+              color={colors.text.secondary}
+              style={{ marginBottom: spacing.base }}
+            />
+            <Text style={commonStyles.textSecondary}>Memuat produk...</Text>
           </View>
-        </View>
-
-        {/* Tabel Produk */}
-        <View style={{ padding: 16 }}>
-          <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-            <Text style={{ color: "#fafafa", fontSize: 18, fontWeight: "bold" }}>
-              Kelola Produk
-            </Text>
-            <Pressable
-              onPress={() => Alert.alert("Info", "Fitur tambah produk segera hadir")}
-              style={{
-                backgroundColor: "#fafafa",
-                paddingHorizontal: 16,
-                paddingVertical: 8,
-                borderRadius: 6,
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <MaterialCommunityIcons name="plus" size={16} color="#0a0a0a" style={{ marginRight: 4 }} />
-              <Text style={{ fontSize: 14, fontWeight: "600", color: "#0a0a0a" }}>
-                Tambah
-              </Text>
-            </Pressable>
+        ) : produkList.length === 0 ? (
+          <View style={tableStyles.emptyState}>
+            <MaterialCommunityIcons
+              name="package-variant-closed"
+              size={32}
+              color={colors.text.secondary}
+              style={{ marginBottom: spacing.base }}
+            />
+            <Text style={commonStyles.textSecondary}>Belum ada produk</Text>
           </View>
-
-          {/* Table Header */}
-          <View
-            style={{
-              backgroundColor: "#1a1a1a",
-              borderTopLeftRadius: 8,
-              borderTopRightRadius: 8,
-              borderBottomWidth: 1,
-              borderBottomColor: "#404040",
-              paddingVertical: 12,
-              paddingHorizontal: 12,
-              flexDirection: "row",
-              borderWidth: 1,
-              borderColor: "#262626",
-            }}
-          >
-            <Text
-              style={{
-                width: 50,
-                fontSize: 12,
-                fontWeight: "700",
-                color: "#fafafa",
-                textTransform: "uppercase",
-              }}
-            >
-              ID
-            </Text>
-            <Text
-              style={{
-                flex: 1,
-                fontSize: 12,
-                fontWeight: "700",
-                color: "#fafafa",
-                textTransform: "uppercase",
-              }}
-            >
-              Nama Produk
-            </Text>
-            <Text
-              style={{
-                width: 100,
-                fontSize: 12,
-                fontWeight: "700",
-                color: "#fafafa",
-                textTransform: "uppercase",
-                textAlign: "right",
-              }}
-            >
-              Harga
-            </Text>
-            <Text
-              style={{
-                width: 100,
-                fontSize: 12,
-                fontWeight: "700",
-                color: "#fafafa",
-                textTransform: "uppercase",
-                textAlign: "center",
-              }}
-            >
-              Aksi
-            </Text>
-          </View>
-
-          {/* Table Body */}
-          {loading ? (
+        ) : (
+          produkList.map((produk, index) => (
             <View
-              style={{
-                backgroundColor: "#1a1a1a",
-                borderBottomLeftRadius: 8,
-                borderBottomRightRadius: 8,
-                borderLeftWidth: 1,
-                borderLeftColor: "#262626",
-                borderRightWidth: 1,
-                borderRightColor: "#262626",
-                borderBottomWidth: 1,
-                borderBottomColor: "#262626",
-                alignItems: "center",
-                justifyContent: "center",
-                paddingVertical: 40,
-              }}
-            >
-              <MaterialCommunityIcons
-                name="loading"
-                size={32}
-                color="#a3a3a3"
-                style={{ marginBottom: 12 }}
-              />
-              <Text style={{ color: "#a3a3a3", fontSize: 14 }}>
-                Memuat produk...
-              </Text>
-            </View>
-          ) : produkList.length === 0 ? (
-            <View
-              style={{
-                backgroundColor: "#1a1a1a",
-                borderBottomLeftRadius: 8,
-                borderBottomRightRadius: 8,
-                borderWidth: 1,
-                borderColor: "#262626",
-                paddingVertical: 32,
-                alignItems: "center",
-              }}
-            >
-              <MaterialCommunityIcons
-                name="package-variant-closed"
-                size={32}
-                color="#a3a3a3"
-                style={{ marginBottom: 12 }}
-              />
-              <Text style={{ color: "#a3a3a3", fontSize: 14 }}>
-                Belum ada produk
-              </Text>
-            </View>
-          ) : (
-            produkList.map((produk, index) => (
-              <View
-                key={produk.id || index}
-                style={{
-                  backgroundColor: index % 2 === 0 ? "#0f0f0f" : "#1a1a1a",
-                  paddingVertical: 12,
-                  paddingHorizontal: 12,
+              key={produk.id || index}
+              style={[
+                tableStyles.row,
+                index % 2 === 0 ? tableStyles.rowEven : tableStyles.rowOdd,
+                {
                   borderBottomWidth: index === produkList.length - 1 ? 0 : 1,
-                  borderBottomColor: "#262626",
-                  borderLeftWidth: 1,
-                  borderLeftColor: "#262626",
-                  borderRightWidth: 1,
-                  borderRightColor: "#262626",
-                  borderBottomLeftRadius: index === produkList.length - 1 ? 8 : 0,
-                  borderBottomRightRadius: index === produkList.length - 1 ? 8 : 0,
+                  borderBottomColor: colors.border.primary,
+                  borderBottomLeftRadius: index === produkList.length - 1 ? borderRadius.md : 0,
+                  borderBottomRightRadius: index === produkList.length - 1 ? borderRadius.md : 0,
+                },
+              ]}
+            >
+              <Text style={[tableStyles.cellText, { width: 50 }]}>{produk.id}</Text>
+              <Text style={[tableStyles.cellText, { flex: 1 }]}>
+                {produk.nama || "-"}
+              </Text>
+              <Text style={[tableStyles.cellText, { width: 100, textAlign: "right" }]}>
+                Rp {produk.harga?.toLocaleString("id-ID") || "0"}
+              </Text>
+              <View
+                style={{
+                  width: 100,
                   flexDirection: "row",
-                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                <Text
-                  style={{
-                    width: 50,
-                    fontSize: 14,
-                    fontWeight: "600",
-                    color: "#fafafa",
+                <Pressable
+                  onPress={() => {
+                    if (produk.id !== undefined) {
+                      router.push(`/seller/edit/${produk.id}` as any);
+                    }
                   }}
+                  style={buttonStyles.iconButton}
                 >
-                  {produk.id}
-                </Text>
-                <Text
-                  style={{
-                    flex: 1,
-                    fontSize: 14,
-                    fontWeight: "600",
-                    color: "#fafafa",
+                  <MaterialCommunityIcons
+                    name="pencil"
+                    size={16}
+                    color={colors.text.primary}
+                  />
+                </Pressable>
+                <Pressable
+                  onPress={() => {
+                    console.log("Delete button pressed, produk.id:", produk.id);
+                    if (produk.id !== undefined) {
+                      handleDelete(produk.id);
+                    } else {
+                      console.log("produk.id is undefined!");
+                    }
                   }}
+                  style={[buttonStyles.iconButtonDanger, { marginLeft: spacing.md }]}
                 >
-                  {produk.nama || "-"}
-                </Text>
-                <Text
-                  style={{
-                    width: 100,
-                    fontSize: 14,
-                    fontWeight: "600",
-                    color: "#fafafa",
-                    textAlign: "right",
-                  }}
-                >
-                  Rp {produk.harga?.toLocaleString("id-ID") || "0"}
-                </Text>
-                <View
-                  style={{
-                    width: 100,
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    gap: 8,
-                  }}
-                >
-                  <Pressable
-                    onPress={() => Alert.alert("Info", "Fitur edit segera hadir")}
-                    style={{
-                      backgroundColor: "#404040",
-                      padding: 6,
-                      borderRadius: 4,
-                    }}
-                  >
-                    <MaterialCommunityIcons name="pencil" size={16} color="#fafafa" />
-                  </Pressable>
-                  <Pressable
-                    onPress={() => produk.id && handleDelete(produk.id)}
-                    style={{
-                      backgroundColor: "#7f1d1d",
-                      padding: 6,
-                      borderRadius: 4,
-                    }}
-                  >
-                    <MaterialCommunityIcons name="delete" size={16} color="#fafafa" />
-                  </Pressable>
-                </View>
+                  <MaterialCommunityIcons
+                    name="delete"
+                    size={16}
+                    color={colors.text.primary}
+                  />
+                </Pressable>
               </View>
-            ))
-          )}
-        </View>
-      </ScrollView>
-    );
-  }
+            </View>
+          ))
+        )}
+      </View>
 
+      {/* Delete Confirmation Modal */}
+      <Modal
+        visible={deleteModalVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={cancelDelete}
+      >
+        <View style={modalStyles.backdrop}>
+          <View style={modalStyles.container}>
+            <View style={modalStyles.header}>
+              <View style={modalStyles.iconContainer}>
+                <MaterialCommunityIcons
+                  name="alert-circle"
+                  size={24}
+                  color={colors.text.primary}
+                />
+              </View>
+              <Text style={modalStyles.title}>Konfirmasi Hapus</Text>
+            </View>
+
+            <Text style={modalStyles.message}>
+              Apakah Anda yakin ingin menghapus produk #{productToDelete}? Tindakan
+              ini tidak dapat dibatalkan.
+            </Text>
+
+            <View style={modalStyles.buttonContainer}>
+              <Pressable
+                onPress={cancelDelete}
+                disabled={deleting}
+                style={[
+                  buttonStyles.secondary,
+                  { flex: 1, justifyContent: "center" },
+                ]}
+              >
+                <Text style={buttonStyles.secondaryText}>Batal</Text>
+              </Pressable>
+
+              <Pressable
+                onPress={confirmDelete}
+                disabled={deleting}
+                style={[
+                  buttonStyles.danger,
+                  { flex: 1, marginLeft: spacing.base },
+                  deleting && buttonStyles.disabled,
+                ]}
+              >
+                {deleting ? (
+                  <>
+                    <ActivityIndicator size="small" color={colors.text.primary} />
+                    <Text
+                      style={[buttonStyles.dangerText, { marginLeft: spacing.md }]}
+                    >
+                      Menghapus...
+                    </Text>
+                  </>
+                ) : (
+                  <Text style={buttonStyles.dangerText}>Hapus</Text>
+                )}
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    </ScrollView>
+  );
+}

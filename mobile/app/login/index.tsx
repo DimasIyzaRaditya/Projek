@@ -3,9 +3,16 @@ import React, { useState } from "react";
 import { useRouter } from "expo-router";
 import { API_AUTH_LOGIN } from "@/scripts/api";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  colors,
+  authStyles,
+  inputStyles,
+  buttonStyles,
+  alertStyles,
+  spacing,
+} from "@/app/styles";
 
 export default function LoginPage() {
-  // buat state
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -24,7 +31,6 @@ export default function LoginPage() {
     try {
       console.log("🔐 Attempting login with username:", username);
 
-      // Login via API
       const res = await fetch(`${API_AUTH_LOGIN}`, {
         method: "POST",
         headers: {
@@ -43,23 +49,19 @@ export default function LoginPage() {
         return;
       }
 
-      // Determine role from API response atau dari data
       let role: "admin" | "seller" = "seller";
 
-      // Cek apakah API return role data
       if (data.role) {
         role = data.role.toLowerCase() === "admin" ? "admin" : "seller";
       } else if (data.data && data.data.role) {
         role = data.data.role.toLowerCase() === "admin" ? "admin" : "seller";
       } else {
-        // Fallback ke username jika API tidak return role
         role = username.toLowerCase() === "admin" ? "admin" : "seller";
       }
 
       setUserRole(role);
       console.log("✅ Login berhasil, role dari API:", role);
 
-      // Navigate based on role
       if (role === "admin") {
         console.log("➡️ Navigating to admin dashboard...");
         router.replace("/admin" as never);
@@ -77,17 +79,25 @@ export default function LoginPage() {
   };
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: '#0a0a0a' }} contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', minHeight: '100%', paddingHorizontal: 16 }}>
-      <View style={{ width: '100%', maxWidth: 320, backgroundColor: 'rgba(19, 19, 19, 0.5)', borderRadius: 8, borderWidth: 1, borderColor: '#262626', padding: 24 }}>
+    <ScrollView
+      style={{ flex: 1, backgroundColor: colors.background.primary }}
+      contentContainerStyle={{
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100%",
+        paddingHorizontal: spacing.lg,
+      }}
+    >
+      <View style={authStyles.container}>
         {/* Header */}
-        <View style={{ alignItems: 'center', marginBottom: 24 }}>
-        <Image
-          source={require('@/assets/images/logo.png')}
-          style={{ width: 80, height: 80, marginBottom: 24 }}
-          resizeMode="contain"
-        />
-          <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#fafafa' }}>Login</Text>
-          <Text style={{ fontSize: 14, color: '#a3a3a3', marginTop: 8, textAlign: 'center' }}>
+        <View style={authStyles.headerContainer}>
+          <Image
+            source={require("@/assets/images/logo.png")}
+            style={{ width: 80, height: 80, marginBottom: spacing["2xl"] }}
+            resizeMode="contain"
+          />
+          <Text style={authStyles.title}>Login</Text>
+          <Text style={authStyles.subtitle}>
             Masuk dengan akun Ahmeng Trade Anda
           </Text>
         </View>
@@ -95,55 +105,56 @@ export default function LoginPage() {
         {/* Form */}
         <View>
           {/* Username */}
-          <View style={{ marginBottom: 16 }}>
-            <Text style={{ fontSize: 14, fontWeight: '600', color: '#fafafa', marginBottom: 6 }}>Username</Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: '#404040', backgroundColor: '#1f1f1f', borderRadius: 6, paddingHorizontal: 12 }}>
-              <MaterialCommunityIcons name="account-outline" size={18} color="#a3a3a3" />
+          <View style={inputStyles.container}>
+            <Text style={inputStyles.label}>Username</Text>
+            <View style={inputStyles.wrapper}>
+              <MaterialCommunityIcons
+                name="account-outline"
+                size={18}
+                color={colors.text.secondary}
+              />
               <TextInput
                 placeholder="Masukkan username"
-                placeholderTextColor="#6b7280"
+                placeholderTextColor={colors.text.muted}
                 value={username}
                 onChangeText={setUsername}
                 editable={!loading}
-                style={{
-                  flex: 1,
-                  color: '#fafafa',
-                  paddingVertical: 10,
-                  paddingHorizontal: 10,
-                  fontSize: 14,
-                }}
+                style={inputStyles.input}
               />
             </View>
           </View>
 
           {/* Password */}
-          <View style={{ marginBottom: 16 }}>
-            <Text style={{ fontSize: 14, fontWeight: '600', color: '#fafafa', marginBottom: 6 }}>Password</Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: '#404040', backgroundColor: '#1f1f1f', borderRadius: 6, paddingHorizontal: 12 }}>
-              <MaterialCommunityIcons name="lock-outline" size={18} color="#a3a3a3" />
+          <View style={inputStyles.container}>
+            <Text style={inputStyles.label}>Password</Text>
+            <View style={inputStyles.wrapper}>
+              <MaterialCommunityIcons
+                name="lock-outline"
+                size={18}
+                color={colors.text.secondary}
+              />
               <TextInput
                 placeholder="Masukkan password"
-                placeholderTextColor="#6b7280"
+                placeholderTextColor={colors.text.muted}
                 secureTextEntry
                 value={password}
                 onChangeText={setPassword}
                 editable={!loading}
-                style={{
-                  flex: 1,
-                  color: '#fafafa',
-                  paddingVertical: 10,
-                  paddingHorizontal: 10,
-                  fontSize: 14,
-                }}
+                style={inputStyles.input}
               />
             </View>
           </View>
 
           {/* Error Message */}
           {error && (
-            <View style={{ backgroundColor: 'rgba(127, 29, 29, 0.5)', borderWidth: 1, borderColor: '#7c2d2d', borderRadius: 6, padding: 12, marginBottom: 16, flexDirection: 'row', alignItems: 'center' }}>
-              <MaterialCommunityIcons name="alert-circle-outline" size={18} color="#f87171" style={{ marginRight: 8 }} />
-              <Text style={{ fontSize: 12, color: '#f87171', flex: 1 }}>{error}</Text>
+            <View style={alertStyles.container}>
+              <MaterialCommunityIcons
+                name="alert-circle-outline"
+                size={18}
+                color={colors.status.error}
+                style={{ marginRight: spacing.md }}
+              />
+              <Text style={alertStyles.text}>{error}</Text>
             </View>
           )}
 
@@ -151,34 +162,34 @@ export default function LoginPage() {
           <Pressable
             onPress={handleLogin}
             disabled={loading}
-            style={({ pressed }) => ({
-              backgroundColor: pressed ? '#d4d4d8' : '#fafafa',
-              borderRadius: 6,
-              paddingVertical: 12,
-              alignItems: 'center',
-              marginBottom: 12,
-              opacity: loading ? 0.5 : 1,
-              flexDirection: 'row',
-              justifyContent: 'center',
-            })}
+            style={({ pressed }) => [
+              buttonStyles.primary,
+              { marginBottom: spacing.base },
+              pressed && { backgroundColor: colors.text.secondary },
+              loading && buttonStyles.disabled,
+            ]}
           >
-            {loading && <MaterialCommunityIcons name="loading" size={16} color="#0a0a0a" style={{ marginRight: 8 }} />}
-            <Text style={{ fontSize: 14, fontWeight: '600', color: '#0a0a0a' }}>
+            {loading && (
+              <MaterialCommunityIcons
+                name="loading"
+                size={16}
+                color={colors.background.primary}
+                style={{ marginRight: spacing.md }}
+              />
+            )}
+            <Text style={buttonStyles.primaryText}>
               {loading ? "Memproses..." : "Login"}
             </Text>
           </Pressable>
 
-
-
           {/* Back Link */}
-          <View style={{ alignItems: 'center' }}>
+          <View style={{ alignItems: "center" }}>
             <Pressable onPress={() => router.back()} disabled={loading}>
-              <Text style={{ fontSize: 14, color: '#fafafa', textDecorationLine: 'underline' }}>Kembali ke beranda</Text>
+              <Text style={authStyles.link}>Kembali ke beranda</Text>
             </Pressable>
           </View>
         </View>
       </View>
-
     </ScrollView>
   );
 }
