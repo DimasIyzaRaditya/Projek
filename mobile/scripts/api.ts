@@ -1,5 +1,5 @@
 // Konfigurasi API
-export const API_AHMENG = 'http://localhost:3001/api';
+export const API_AHMENG = 'http://localhost:3000/api';
 
 // Endpoint Produk
 export const API_PRODUK = `${API_AHMENG}/produk`;

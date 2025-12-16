@@ -70,7 +70,7 @@ export default function LoginPage() {
     } catch (error) {
       console.error("❌ Login error:", error);
       setError(
-        "Terjadi kesalahan saat login. Pastikan API berjalan di port 3001"
+        "Terjadi kesalahan saat login. Pastikan API berjalan di port 3000"
       );
       setLoading(false);
     }
