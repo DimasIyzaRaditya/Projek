@@ -6,7 +6,7 @@ import {
   Pressable,
   TextInput,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { API_PRODUK } from "@/scripts/api";
 import { useRouter } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -19,7 +19,7 @@ interface Produk {
 
 async function getProduk(): Promise<Produk[]> {
   try {
-    console.log("🔄 Fetching products from:", API_PRODUK);
+    console.log("Fetching products from:", API_PRODUK);
 
     const res = await fetch(API_PRODUK, {
       method: "GET",
@@ -29,23 +29,23 @@ async function getProduk(): Promise<Produk[]> {
       },
     });
 
-    console.log("📊 Response status:", res.status);
+    console.log("Response status:", res.status);
 
     if (!res.ok) {
       const errorText = await res.text();
-      console.error("❌ API error:", res.status, errorText);
+      console.error("API error:", res.status, errorText);
       throw new Error(`API Error: ${res.status}`);
     }
 
     const data = await res.json();
-    console.log("✅ API response:", data);
+    console.log("API response:", data);
 
     const products = Array.isArray(data.data) ? data.data : [];
-    console.log("📦 Total products:", products.length);
+    console.log("Total products:", products.length);
 
     return products;
   } catch (error) {
-    console.error("❌ Error fetching products:", error);
+    console.error("Error fetching products:", error);
     return [];
   }
 }
@@ -56,9 +56,38 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [showSearchResults, setShowSearchResults] = useState(false);
+
+  useEffect(() => {
+    getProduk().then((data) => {
+      setProducts(data);
+      setLoading(false);
+    }).catch((err) => {
+      setError("Gagal memuat produk");
+      setLoading(false);
+    });
+  }, []);
+
+  // Filter products based on search query
+  const filteredProducts = searchQuery.trim()
+    ? products.filter((product) =>
+        product.nama.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : [];
+
+  const handleSearchChange = (text: string) => {
+    setSearchQuery(text);
+    setShowSearchResults(text.trim().length > 0);
+  };
+
+  const handleProductClick = (productId: number) => {
+    setSearchQuery("");
+    setShowSearchResults(false);
+    router.push(`/detail/${productId}` as never);
+  };
 
   return (
-    <ScrollView>
+    <ScrollView style={{ backgroundColor: "#0a0a0a" }}>
       {/* Header */}
       <View
         style={{
@@ -111,32 +140,121 @@ export default function HomePage() {
       </View>
       {/* Main Section */}
       {/* Search Input */}
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          backgroundColor: "#1a1a1a",
-          borderWidth: 1,
-          borderColor: "#404040",
-          borderRadius: 8,
-          paddingHorizontal: 12,
-          paddingVertical: 8,
-        }}
-      >
-        <MaterialCommunityIcons name="magnify" size={20} color="#a3a3a3" />
-        <TextInput
-          placeholder="Cari produk digital..."
-          placeholderTextColor="#666666"
-          value={searchQuery}
-          onChangeText={setSearchQuery}
+      <View style={{ paddingHorizontal: 16, paddingTop: 16 }}>
+        <View
           style={{
-            flex: 1,
-            marginLeft: 12,
-            fontSize: 14,
-            color: "#fafafa",
+            flexDirection: "row",
+            alignItems: "center",
+            backgroundColor: "#1a1a1a",
+            borderWidth: 1,
+            borderColor: "#404040",
+            borderRadius: 8,
+            paddingHorizontal: 12,
             paddingVertical: 8,
           }}
-        />
+        >
+          <MaterialCommunityIcons name="magnify" size={20} color="#a3a3a3" />
+          <TextInput
+            placeholder="Cari produk digital..."
+            placeholderTextColor="#666666"
+            value={searchQuery}
+            onChangeText={handleSearchChange}
+            style={{
+              flex: 1,
+              marginLeft: 12,
+              fontSize: 14,
+              color: "#fafafa",
+              paddingVertical: 8,
+            }}
+          />
+          {searchQuery.length > 0 && (
+            <Pressable onPress={() => {
+              setSearchQuery("");
+              setShowSearchResults(false);
+            }}>
+              <MaterialCommunityIcons name="close-circle" size={20} color="#a3a3a3" />
+            </Pressable>
+          )}
+        </View>
+
+        {/* Search Results Dropdown */}
+        {showSearchResults && (
+          <View
+            style={{
+              marginTop: 8,
+              backgroundColor: "#1a1a1a",
+              borderWidth: 1,
+              borderColor: "#404040",
+              borderRadius: 8,
+              maxHeight: 300,
+            }}
+          >
+            {filteredProducts.length > 0 ? (
+              <ScrollView
+                nestedScrollEnabled={true}
+                style={{ maxHeight: 300 }}
+              >
+                {filteredProducts.map((product, index) => (
+                  <Pressable
+                    key={product.id}
+                    onPress={() => handleProductClick(product.id)}
+                    style={({ pressed }) => [
+                      {
+                        paddingVertical: 12,
+                        paddingHorizontal: 16,
+                        borderBottomWidth: index === filteredProducts.length - 1 ? 0 : 1,
+                        borderBottomColor: "#262626",
+                        backgroundColor: pressed ? "#262626" : "transparent",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      },
+                    ]}
+                  >
+                    <View style={{ flex: 1 }}>
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          fontWeight: "600",
+                          color: "#fafafa",
+                          marginBottom: 4,
+                        }}
+                      >
+                        {product.nama}
+                      </Text>
+                      <Text style={{ fontSize: 12, color: "#a3a3a3" }}>
+                        Rp {product.harga.toLocaleString("id-ID")}
+                      </Text>
+                    </View>
+                    <MaterialCommunityIcons
+                      name="arrow-right"
+                      size={18}
+                      color="#a3a3a3"
+                    />
+                  </Pressable>
+                ))}
+              </ScrollView>
+            ) : (
+              <View
+                style={{
+                  paddingVertical: 20,
+                  paddingHorizontal: 16,
+                  alignItems: "center",
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="magnify-close"
+                  size={32}
+                  color="#a3a3a3"
+                  style={{ marginBottom: 8 }}
+                />
+                <Text style={{ fontSize: 14, color: "#a3a3a3", textAlign: "center" }}>
+                  Produk "{searchQuery}" tidak ditemukan
+                </Text>
+              </View>
+            )}
+          </View>
+        )}
       </View>
       <View
         style={{
