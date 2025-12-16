@@ -5,7 +5,14 @@ import { prisma } from "@/lib/prisma";
 export async function GET() {
   try {
     const transaksi = await prisma.transaksi.findMany({
-      include: {
+      select: {
+        id: true,
+        userId: true,
+        produkId: true,
+        namaPembeli: true,
+        emailPembeli: true,
+        totalHarga: true,
+        createdAt: true,
         user: {
           select: {
             id: true,

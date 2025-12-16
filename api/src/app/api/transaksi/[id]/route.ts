@@ -10,7 +10,14 @@ export async function GET(
     const { id } = await params;
     const transaksi = await prisma.transaksi.findUnique({
       where: { id: parseInt(id) },
-      include: {
+      select: {
+        id: true,
+        userId: true,
+        produkId: true,
+        namaPembeli: true,
+        emailPembeli: true,
+        totalHarga: true,
+        createdAt: true,
         user: {
           select: {
             id: true,
