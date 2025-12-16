@@ -32,7 +32,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { userId, produkId, totalHarga } = body;
+    const { userId, produkId, totalHarga, namaPembeli, emailPembeli } = body;
 
     if (!userId || !produkId || !totalHarga) {
       return NextResponse.json(
@@ -44,6 +44,20 @@ export async function POST(request: NextRequest) {
     if (typeof totalHarga !== "number" || totalHarga < 0) {
       return NextResponse.json(
         { error: "totalHarga must be a positive number" },
+        { status: 400 }
+      );
+    }
+
+    if (namaPembeli && typeof namaPembeli !== "string") {
+      return NextResponse.json(
+        { error: "namaPembeli must be a string" },
+        { status: 400 }
+      );
+    }
+
+    if (emailPembeli && typeof emailPembeli !== "string") {
+      return NextResponse.json(
+        { error: "emailPembeli must be a string" },
         { status: 400 }
       );
     }
@@ -67,6 +81,8 @@ export async function POST(request: NextRequest) {
         userId,
         produkId,
         totalHarga,
+        namaPembeli: namaPembeli || null,
+        emailPembeli: emailPembeli || null,
       },
       include: {
         user: {

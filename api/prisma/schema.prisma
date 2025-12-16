@@ -36,6 +36,9 @@ model Transaksi {
   produk      Produk        @relation(fields: [produkId], references: [id])
   produkId    Int
 
+  namaPembeli String?
+  emailPembeli String?
+
   totalHarga  Int
   createdAt   DateTime      @default(now()) @db.Date
 }
