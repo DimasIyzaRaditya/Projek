@@ -16,6 +16,7 @@ interface Produk {
 
 export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [userRole, setUserRole] = useState<string>("")
   const [searchQuery, setSearchQuery] = useState("")
   const [allProducts, setAllProducts] = useState<Produk[]>([])
   const [showDropdown, setShowDropdown] = useState(false)
@@ -23,7 +24,11 @@ export default function Navbar() {
 
   useEffect(() => {
     const userData = localStorage.getItem("user")
-    setIsLoggedIn(!!userData)
+    if (userData) {
+      setIsLoggedIn(true)
+      const parsedUser = JSON.parse(userData)
+      setUserRole(parsedUser.username.toLowerCase() === "admin" ? "admin" : "seller")
+    }
     fetchProducts()
   }, [])
 
@@ -99,7 +104,14 @@ export default function Navbar() {
 
           {/* Nav Items */}
           <div className="flex items-center space-x-4">
-            {!isLoggedIn && (
+            {isLoggedIn ? (
+              <Link href={userRole === "admin" ? "/admin" : "/seller"}>
+                <Button variant="ghost" size="sm">
+                  <User className="h-4 w-4 mr-2" />
+                  Dashboard
+                </Button>
+              </Link>
+            ) : (
               <Link href="/login">
                 <Button variant="ghost" size="sm">
                   <User className="h-4 w-4 mr-2" />
