@@ -1,15 +1,17 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Navbar from '@/components/navbar';
+import ProductCard from '@/components/product-card';
 import { API_PRODUK } from '@/lib/api';
 
 interface Produk {
   id: number;
   nama: string;
   harga: number;
-  deskripsi: string | null;
-  createdAt: string;
-  updatedAt: string;
+  deskripsi?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export default function PublicPage() {
@@ -31,7 +33,7 @@ export default function PublicPage() {
         throw new Error('Gagal mengambil data produk');
       }
       const result = await response.json();
-      setProduk(result.data);
+      setProduk(result.data || []);
     } catch (err) {
       console.error('Fetch error:', err);
       setError(err instanceof Error ? err.message : 'Terjadi kesalahan');
@@ -40,74 +42,50 @@ export default function PublicPage() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-lg">Loading...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-lg text-red-500">Error: {error}</p>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Daftar Produk</h1>
-        
-        <div className="bg-white rounded-lg shadow overflow-hidden">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                  ID
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                  Nama Produk
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                  Harga
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                  Deskripsi
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {produk.length === 0 ? (
-                <tr>
-                  <td colSpan={4} className="px-6 py-4 text-center text-gray-500">
-                    Tidak ada produk
-                  </td>
-                </tr>
-              ) : (
-                produk.map((data: Produk) => (
-                  <tr key={data.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {data.id}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {data.nama}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      Rp {data.harga.toLocaleString('id-ID')}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-500">
-                      {data.deskripsi || '-'}
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+    <div className="min-h-screen bg-neutral-950">
+      <Navbar />
+
+      {/* Products Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold text-neutral-50">Produk Digital</h2>
+            <p className="mt-2 text-neutral-400">
+              Temukan berbagai produk digital berkualitas untuk kebutuhan Anda
+            </p>
+          </div>
+
+          {loading ? (
+            <div className="flex items-center justify-center py-16">
+              <div className="h-8 w-8 animate-spin rounded-full border-4 border-neutral-800 border-t-blue-600"></div>
+            </div>
+          ) : error ? (
+            <div className="rounded-md border border-red-800 bg-red-950/50 p-4 text-red-400">
+              {error}
+            </div>
+          ) : produk.length === 0 ? (
+            <div className="text-center py-16">
+              <p className="text-neutral-400">Tidak ada produk yang tersedia</p>
+            </div>
+          ) : (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {produk.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  id={product.id.toString()}
+                  title={product.nama}
+                  description="Produk digital berkualitas"
+                  price={product.harga}
+                  rating={4.5}
+                  downloads={0}
+                  imageUrl=""
+                />
+              ))}
+            </div>
+          )}
         </div>
-      </div>
+      </section>
     </div>
   );
 }
