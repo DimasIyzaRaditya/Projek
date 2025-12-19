@@ -7,7 +7,7 @@ import Navbar from "@/components/navbar"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Package, ShoppingCart, LogOut, DollarSign, Plus, Edit2, Trash2, Loader2, AlertCircle } from "lucide-react"
-import { API_PRODUK } from "@/lib/api"
+import { API_PRODUK, API_TRANSAKSI } from "@/lib/api"
 import { formatRupiah } from "@/lib/scripts"
 
 
@@ -19,10 +19,21 @@ interface Produk {
   createdAt?: string
 }
 
+interface Transaksi {
+  id: number
+  userId: number
+  produkId: number
+  totalHarga: number
+  namaPembeli?: string
+  emailPembeli?: string
+  createdAt: string
+}
+
 export default function SellerPage() {
   const router = useRouter()
   const [user, setUser] = useState<any>(null)
   const [produkList, setProdukList] = useState<Produk[]>([])
+  const [transaksiList, setTransaksiList] = useState<Transaksi[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [deleteModalVisible, setDeleteModalVisible] = useState(false)
@@ -44,6 +55,7 @@ export default function SellerPage() {
 
     setUser(parsedUser)
     fetchProduk()
+    fetchTransaksi()
   }, [router])
 
   const fetchProduk = async () => {
@@ -59,6 +71,17 @@ export default function SellerPage() {
       setProdukList([])
     }
     setLoading(false)
+  }
+
+  const fetchTransaksi = async () => {
+    try {
+      const res = await fetch(API_TRANSAKSI)
+      const json = await res.json()
+      setTransaksiList(json.data || [])
+    } catch (e) {
+      console.error("Error fetching transactions:", e)
+      setTransaksiList([])
+    }
   }
 
   const handleLogout = () => {
@@ -107,8 +130,8 @@ export default function SellerPage() {
 
   const stats = {
     totalProduk: produkList.length,
-    totalTransaksi: 0,
-    totalRevenue: 0,
+    totalTransaksi: transaksiList.length,
+    totalRevenue: transaksiList.reduce((sum, t) => sum + t.totalHarga, 0),
   }
 
   return (
