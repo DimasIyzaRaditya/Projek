@@ -4,7 +4,7 @@ import { Download, Star, BookOpen, Code2, Palette, Layout } from "lucide-react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
-import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 interface ProductCardProps {
   id: string
@@ -46,8 +46,17 @@ export default function ProductCard({
   imageUrl,
   category,
 }: ProductCardProps) {
+  const router = useRouter()
+
+  const handleCardClick = () => {
+    router.push(`/detail/${id}`)
+  }
+
   return (
-    <Card className="group overflow-hidden transition-all duration-300 hover:border-neutral-500 hover:shadow-[0_0_40px_rgba(150,150,150,0.5)] hover:-translate-y-2 hover:bg-neutral-900/80 hover:ring-2 hover:ring-neutral-500/60">
+    <Card 
+      onClick={handleCardClick}
+      className="group overflow-hidden transition-all duration-300 hover:border-neutral-500 hover:shadow-[0_0_40px_rgba(150,150,150,0.5)] hover:-translate-y-2 hover:bg-neutral-900/80 hover:ring-2 hover:ring-neutral-500/60 cursor-pointer"
+    >
       {/* Image */}
       <div className="relative aspect-video w-full overflow-hidden bg-neutral-800">
         {imageUrl ? (
@@ -92,9 +101,15 @@ export default function ProductCard({
       </CardContent>
 
       <CardFooter>
-        <Link href={`/detail/${id}`} className="w-full">
-          <Button className="w-full bg-neutral-50 text-neutral-900 hover:bg-white shadow-sm transition-all duration-300 font-medium cursor-pointer">Lihat Detail</Button>
-        </Link>
+        <Button 
+          onClick={(e) => {
+            e.stopPropagation()
+            handleCardClick()
+          }}
+          className="w-full bg-neutral-50 text-neutral-900 hover:bg-white shadow-sm transition-all duration-300 font-medium cursor-pointer"
+        >
+          Lihat Detail
+        </Button>
       </CardFooter>
     </Card>
   )
