@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
+import { API_AUTH_LOGIN } from "@/lib/api"
 
 export default function LoginPage() {
   const router = useRouter()
@@ -22,7 +23,7 @@ export default function LoginPage() {
 
     try {
       // Login via API
-      const res = await fetch("http://localhost:3000/api/auth/login", {
+      const res = await fetch(`${API_AUTH_LOGIN}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
