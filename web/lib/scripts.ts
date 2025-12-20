@@ -66,3 +66,9 @@ export function formatTime(dateStr: string | undefined): string {
     return '-';
   }
 }
+
+// filter input hanya angka
+export function filterNumericInput(text: string): string {
+  return text.replace(/[^0-9]/g, '');
+}
+
