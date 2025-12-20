@@ -72,3 +72,9 @@ export function filterNumericInput(text: string): string {
   return text.replace(/[^0-9]/g, '');
 }
 
+// sanitasi input untuk mencegah XSS (hapus simbol berbahaya)
+export function sanitizeInput(text: string): string {
+  return text
+    .replace(/[<>{}[\]\\\/=]/g, '') // Hapus simbol berbahaya
+    .trim();
+}
