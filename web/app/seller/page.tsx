@@ -171,7 +171,7 @@ export default function SellerPage() {
         )}
 
         {/* Stats */}
-        <div className="mb-8 grid gap-6 md:grid-cols-2">
+        <div className="mb-8 grid gap-6 md:grid-cols-1">
           <Card className="border-neutral-800 bg-neutral-900/50">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-neutral-50">
@@ -184,7 +184,6 @@ export default function SellerPage() {
               <p className="text-xs text-neutral-400">Total produk yang dijual</p>
             </CardContent>
           </Card>
-
         </div>
 
         {/* Produk List */}
