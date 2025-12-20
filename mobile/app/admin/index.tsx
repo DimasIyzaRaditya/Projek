@@ -44,7 +44,6 @@ export default function AdminPage() {
   const [loading, setLoading] = React.useState(true);
   const [transaksi, setTransaksi] = React.useState<Transaksi[]>([]);
   const [stats, setStats] = React.useState({
-    totalUser: 0,
     totalProduk: 0,
     totalTransaksi: 0,
   });
