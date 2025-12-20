@@ -64,7 +64,7 @@ export default function EditProdukPage() {
             return;
         }
 
-        const hargaNum = parseFloat(harga);
+        const hargaNum = parseInt(harga);
         if (isNaN(hargaNum) || hargaNum <= 0) {
             Alert.alert("Validasi", "Harga harus berupa angka positif");
             return;
@@ -83,16 +83,16 @@ export default function EditProdukPage() {
                 }),
             });
 
-            if (res.ok) {
-                Alert.alert("Sukses", "Produk berhasil diperbarui", [
-                    {
-                        text: "OK",
-                        onPress: () => router.back(),
-                    },
-                ]);
-            } else {
-                Alert.alert("Error", "Gagal memperbarui produk");
+            if (!res.ok) {
+                const data = await res.json();
+                Alert.alert("Error", data.error || "Gagal memperbarui produk");
+                setSaving(false);
+                return;
             }
+
+            // Langsung redirect tanpa alert
+            setSaving(false);
+            router.replace("/seller");
         } catch (e) {
             Alert.alert("Error", "Terjadi kesalahan");
         }
