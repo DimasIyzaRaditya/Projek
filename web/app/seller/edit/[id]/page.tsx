@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { ArrowLeft, Loader2 } from "lucide-react"
 import { API_PRODUK_BY_ID, API_PRODUK } from "@/lib/api"
+import { sanitizeInput, filterNumericInput } from "@/lib/scripts"
 
 interface Produk {
   id: number
@@ -71,7 +72,7 @@ export default function EditProductPage() {
     const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "harga" ? parseInt(value) : value,
+      [name]: name === "harga" ? parseInt(filterNumericInput(value) || "0") : value,
     }))
   }
 
@@ -93,9 +94,9 @@ export default function EditProductPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          nama: formData.nama.trim(),
+          nama: sanitizeInput(formData.nama),
           harga: formData.harga,
-          deskripsi: formData.deskripsi?.trim() || null,
+          deskripsi: sanitizeInput(formData.deskripsi || "") || null,
         }),
       })
 
