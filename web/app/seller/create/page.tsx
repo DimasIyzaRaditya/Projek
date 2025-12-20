@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { ArrowLeft, Loader2 } from "lucide-react"
 import { API_PRODUK } from "@/lib/api"
+import { sanitizeInput, filterNumericInput } from "@/lib/scripts"
 
 export default function CreateProductPage() {
   const router = useRouter()
@@ -43,7 +44,7 @@ export default function CreateProductPage() {
     const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: name === "harga" ? filterNumericInput(value) : value,
     }))
   }
 
@@ -65,9 +66,9 @@ export default function CreateProductPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          nama: formData.nama.trim(),
+          nama: sanitizeInput(formData.nama),
           harga: parseInt(formData.harga),
-          deskripsi: formData.deskripsi.trim() || null,
+          deskripsi: sanitizeInput(formData.deskripsi) || null,
         }),
       })
 
