@@ -12,6 +12,7 @@ import { useRouter } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API_PRODUK, API_PRODUK_BY_ID } from "@/scripts/api";
+import { formatRupiah } from "@/scripts/helpers";
 import {
   colors,
   commonStyles,
@@ -147,7 +148,7 @@ export default function SellerPage() {
         <View style={sectionStyles.header}>
           <Text style={sectionStyles.headerTitle}>Kelola Produk</Text>
           <Pressable
-            onPress={() => Alert.alert("Info", "Fitur tambah produk segera hadir")}
+            onPress={() => router.push("/seller/create" as any)}
             style={[buttonStyles.primary, { paddingHorizontal: spacing.lg, paddingVertical: spacing.md }]}
           >
             <MaterialCommunityIcons
@@ -213,7 +214,7 @@ export default function SellerPage() {
                 {produk.nama || "-"}
               </Text>
               <Text style={[tableStyles.cellText, { width: 100, textAlign: "right" }]}>
-                Rp {produk.harga?.toLocaleString("id-ID") || "0"}
+                {formatRupiah(produk.harga)}
               </Text>
               <View
                 style={{
