@@ -11,7 +11,7 @@ import React, { useState } from "react";
 import { useRouter } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { API_PRODUK } from "@/scripts/api";
-import { filterNumericInput } from "@/scripts/helpers";
+import { filterNumericInput, sanitizeInput } from "@/scripts/helpers";
 import {
   colors,
   commonStyles,
@@ -52,9 +52,9 @@ export default function CreateProductPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          nama: formData.nama.trim(),
+          nama: sanitizeInput(formData.nama),
           harga: hargaNum,
-          deskripsi: formData.deskripsi.trim() || null,
+          deskripsi: sanitizeInput(formData.deskripsi) || null,
         }),
       });
 
