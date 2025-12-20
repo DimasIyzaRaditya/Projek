@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { API_TRANSAKSI, API_USER, API_PRODUK } from "@/scripts/api";
 import {
   colors,
   commonStyles,
@@ -51,14 +52,14 @@ export default function AdminPage() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const resTransaksi = await fetch("http://localhost:3000/api/transaksi");
+        const resTransaksi = await fetch(API_TRANSAKSI);
         const jsonTransaksi = await resTransaksi.json();
         console.log("Transaksi data:", jsonTransaksi.data);
         setTransaksi(jsonTransaksi.data || []);
 
         const [resUser, resProduk] = await Promise.all([
-          fetch("http://localhost:3000/api/user"),
-          fetch("http://localhost:3000/api/produk"),
+          fetch(API_USER),
+          fetch(API_PRODUK),
         ]);
 
         const jsonUser = await resUser.json();
