@@ -53,3 +53,8 @@ export function formatNumber(num: number | undefined): string {
   if (!num) return '0';
   return new Intl.NumberFormat('id-ID').format(num);
 }
+
+// filter input hanya angka
+export function filterNumericInput(text: string): string {
+  return text.replace(/[^0-9]/g, '');
+}
