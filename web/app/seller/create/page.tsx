@@ -12,9 +12,11 @@ import { Label } from "@/components/ui/label"
 import { ArrowLeft, Loader2 } from "lucide-react"
 import { API_PRODUK } from "@/lib/api"
 import { sanitizeInput, filterNumericInput } from "@/lib/scripts"
+import { useToast } from "@/components/ui/toast"
 
 export default function CreateProductPage() {
   const router = useRouter()
+  const { showToast, ToastContainer } = useToast()
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
@@ -75,13 +77,13 @@ export default function CreateProductPage() {
       const data = await res.json()
 
       if (!res.ok) {
-        setError(data.error || "Gagal menambahkan produk")
+        showToast(data.error || "Gagal menambahkan produk", "error")
         setLoading(false)
         return
       }
 
-      alert("Produk berhasil ditambahkan!")
-      router.push("/seller")
+      showToast("Produk berhasil ditambahkan!", "success")
+      setTimeout(() => router.push("/seller"), 1500)
     } catch (err) {
       console.error("Error:", err)
       setError("Terjadi kesalahan saat menambahkan produk")
@@ -93,6 +95,7 @@ export default function CreateProductPage() {
 
   return (
     <div className="min-h-screen bg-neutral-950">
+      <ToastContainer />
       <Navbar />
 
       <div className="container mx-auto px-4 py-8">
