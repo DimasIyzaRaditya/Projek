@@ -12,7 +12,6 @@ import { Label } from "@/components/ui/label"
 import { ArrowLeft, Loader2 } from "lucide-react"
 import { API_PRODUK_BY_ID, API_PRODUK } from "@/lib/api"
 import { sanitizeInput, filterNumericInput } from "@/lib/scripts"
-import { useToast } from "@/components/ui/toast"
 
 interface Produk {
   id: number
@@ -25,7 +24,6 @@ export default function EditProductPage() {
   const router = useRouter()
   const params = useParams()
   const id = params.id as string
-  const { showToast, ToastContainer } = useToast()
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
@@ -105,13 +103,13 @@ export default function EditProductPage() {
       const data = await res.json()
 
       if (!res.ok) {
-        showToast(data.error || "Gagal mengupdate produk", "error")
+        setError(data.error || "Gagal mengupdate produk")
         setSubmitting(false)
         return
       }
 
-      showToast("Produk berhasil diupdate!", "success")
-      setTimeout(() => router.push("/seller"), 1500)
+      alert("Produk berhasil diupdate!")
+      router.push("/seller")
     } catch (err) {
       console.error("Error:", err)
       setError("Terjadi kesalahan saat mengupdate produk")
@@ -123,7 +121,6 @@ export default function EditProductPage() {
 
   return (
     <div className="min-h-screen bg-neutral-950">
-      <ToastContainer />
       <Navbar />
 
       <div className="container mx-auto px-4 py-8">
