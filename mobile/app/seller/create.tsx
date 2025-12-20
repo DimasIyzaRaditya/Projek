@@ -11,6 +11,7 @@ import React, { useState } from "react";
 import { useRouter } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { API_PRODUK } from "@/scripts/api";
+import { filterNumericInput } from "@/scripts/helpers";
 import {
   colors,
   commonStyles,
@@ -155,7 +156,7 @@ export default function CreateProductPage() {
                 keyboardType="numeric"
                 value={formData.harga}
                 onChangeText={(text) =>
-                  setFormData((prev) => ({ ...prev, harga: text }))
+                  setFormData((prev) => ({ ...prev, harga: filterNumericInput(text) }))
                 }
                 editable={!loading}
                 style={inputStyles.input}
