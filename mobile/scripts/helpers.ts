@@ -28,3 +28,23 @@ export function formatWIB(dateStr: string | undefined): string {
     return '-';
   }
 }
+
+// format tanggal saja (tanpa waktu)
+export function formatDate(dateStr: string | undefined): string {
+  if (!dateStr) return '-';
+  
+  try {
+    const date = new Date(dateStr);
+    
+    // Format: "17 Des 2025"
+    return new Intl.DateTimeFormat('id-ID', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+      timeZone: 'Asia/Jakarta',
+    }).format(date);
+  } catch (error) {
+    return '-';
+  }
+}
+
