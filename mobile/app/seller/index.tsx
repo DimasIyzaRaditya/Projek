@@ -11,6 +11,7 @@ import React, { useEffect } from "react";
 import { useRouter } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_PRODUK, API_PRODUK_BY_ID } from "@/scripts/api";
 import {
   colors,
   commonStyles,
@@ -46,7 +47,7 @@ export default function SellerPage() {
   const fetchProduk = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:3000/api/produk");
+      const res = await fetch(API_PRODUK);
       const json = await res.json();
       setProdukList(json.data || []);
     } catch (e) {
@@ -77,7 +78,7 @@ export default function SellerPage() {
     setDeleting(true);
 
     try {
-      const res = await fetch(`http://localhost:3000/api/produk/${productToDelete}`, {
+      const res = await fetch(API_PRODUK_BY_ID(productToDelete), {
         method: "DELETE",
       });
       console.log("Delete response status:", res.status);
