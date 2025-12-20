@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { API_PRODUK_BY_ID } from "@/scripts/api";
+import { filterNumericInput } from "@/scripts/helpers";
 import {
     colors,
     commonStyles,
@@ -159,7 +160,7 @@ export default function EditProdukPage() {
                         <Text style={inputStyles.label}>Harga (Rp)</Text>
                         <TextInput
                             value={harga}
-                            onChangeText={setHarga}
+                            onChangeText={(text) => setHarga(filterNumericInput(text))}
                             placeholder="Masukkan harga"
                             placeholderTextColor={colors.text.tertiary}
                             keyboardType="numeric"
