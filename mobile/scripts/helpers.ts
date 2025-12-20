@@ -48,3 +48,8 @@ export function formatDate(dateStr: string | undefined): string {
   }
 }
 
+// format angka biasa
+export function formatNumber(num: number | undefined): string {
+  if (!num) return '0';
+  return new Intl.NumberFormat('id-ID').format(num);
+}
