@@ -66,7 +66,6 @@ export default function AdminPage() {
         const jsonProduk = await resProduk.json();
 
         setStats({
-          totalUser: jsonUser.data?.length || 0,
           totalProduk: jsonProduk.data?.length || 0,
           totalTransaksi: jsonTransaksi.data?.length || 0,
         });
