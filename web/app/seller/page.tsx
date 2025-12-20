@@ -198,18 +198,6 @@ export default function SellerPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-neutral-800 bg-neutral-900/50">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-neutral-50">
-                Pendapatan
-              </CardTitle>
-              <DollarSign className="h-4 w-4 text-emerald-500" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-neutral-50">{formatRupiah(stats.totalRevenue)}</div>
-              <p className="text-xs text-neutral-400">Total pendapatan</p>
-            </CardContent>
-          </Card>
         </div>
 
         {/* Produk List */}
