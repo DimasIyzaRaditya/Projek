@@ -122,18 +122,6 @@ export default function AdminPage() {
 
       {/* Stats Cards */}
       <View style={sectionStyles.container}>
-        {/* Total User */}
-        <View style={cardStyles.container}>
-          <View style={cardStyles.header}>
-            <Text style={cardStyles.title}>Total User</Text>
-            <MaterialCommunityIcons
-              name="account-multiple"
-              size={16}
-              color={colors.text.secondary}
-            />
-          </View>
-          <Text style={cardStyles.description}>Kelola semua user</Text>
-        </View>
 
         {/* Total Produk */}
         <View style={cardStyles.container}>
