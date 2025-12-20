@@ -4,6 +4,7 @@ import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { API_TRANSAKSI, API_USER, API_PRODUK } from "@/scripts/api";
+import { formatRupiah, formatWIB } from "@/scripts/helpers";
 import {
   colors,
   commonStyles,
@@ -243,7 +244,7 @@ export default function AdminPage() {
                   <Text
                     style={[tableStyles.cellText, { width: 120, textAlign: "right" }]}
                   >
-                    Rp {trx.totalHarga?.toLocaleString("id-ID") || "0"}
+                    {formatRupiah(trx.totalHarga)}
                   </Text>
                   <Text
                     style={[
