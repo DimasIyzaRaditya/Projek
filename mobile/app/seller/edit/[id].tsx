@@ -10,6 +10,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { API_PRODUK_BY_ID } from "@/scripts/api";
 import {
     colors,
     commonStyles,
@@ -43,7 +44,7 @@ export default function EditProdukPage() {
     const fetchProduk = async () => {
         setLoading(true);
         try {
-            const res = await fetch(`http://localhost:3000/api/produk/${id}`);
+            const res = await fetch(API_PRODUK_BY_ID(Number(id)));
             const json = await res.json();
             if (json.data) {
                 setProduk(json.data);
@@ -70,7 +71,7 @@ export default function EditProdukPage() {
 
         setSaving(true);
         try {
-            const res = await fetch(`http://localhost:3000/api/produk/${id}`, {
+            const res = await fetch(API_PRODUK_BY_ID(Number(id)), {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
