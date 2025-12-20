@@ -38,7 +38,7 @@ export default function CreateProductPage() {
       return;
     }
 
-    const hargaNum = parseFloat(formData.harga);
+    const hargaNum = parseInt(formData.harga);
     if (isNaN(hargaNum) || hargaNum <= 0) {
       Alert.alert("Validasi", "Harga harus berupa angka positif");
       return;
@@ -54,24 +54,19 @@ export default function CreateProductPage() {
         body: JSON.stringify({
           nama: sanitizeInput(formData.nama),
           harga: hargaNum,
-          deskripsi: sanitizeInput(formData.deskripsi) || null,
         }),
       });
 
-      const data = await res.json();
-
       if (!res.ok) {
+        const data = await res.json();
         Alert.alert("Error", data.error || "Gagal menambahkan produk");
         setLoading(false);
         return;
       }
 
-      Alert.alert("Sukses", "Produk berhasil ditambahkan!", [
-        {
-          text: "OK",
-          onPress: () => router.back(),
-        },
-      ]);
+      // Langsung redirect tanpa alert
+      setLoading(false);
+      router.replace("/seller");
     } catch (err) {
       console.error("Error:", err);
       Alert.alert("Error", "Terjadi kesalahan saat menambahkan produk");
