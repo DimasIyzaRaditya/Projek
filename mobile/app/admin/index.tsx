@@ -132,7 +132,6 @@ export default function AdminPage() {
               color={colors.text.secondary}
             />
           </View>
-          <Text style={cardStyles.value}>{stats.totalUser}</Text>
           <Text style={cardStyles.description}>Kelola semua user</Text>
         </View>
 
