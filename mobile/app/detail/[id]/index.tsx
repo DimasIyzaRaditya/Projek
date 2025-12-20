@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { API_PRODUK_BY_ID } from "@/scripts/api";
+import { formatRupiah } from "@/scripts/helpers";
 
 interface Produk {
   id: number;
@@ -283,7 +284,7 @@ export default function ProductDetailPage() {
 
           {/* Price */}
           <Text style={{ fontSize: 32, fontWeight: "bold", color: "#fafafa" }}>
-            Rp {product.harga.toLocaleString("id-ID")}
+            {formatRupiah(product.harga)}
           </Text>
         </View>
 
