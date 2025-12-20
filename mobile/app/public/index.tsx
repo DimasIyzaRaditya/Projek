@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { API_PRODUK } from "@/scripts/api";
+import { formatRupiah } from "@/scripts/helpers";
 import { useRouter } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
@@ -207,7 +208,7 @@ export default function HomePage() {
                           { fontSize: typography.fontSize.xs },
                         ]}
                       >
-                        Rp {product.harga.toLocaleString("id-ID")}
+                        {formatRupiah(product.harga)}
                       </Text>
                     </View>
                     <MaterialCommunityIcons
@@ -412,7 +413,7 @@ export default function HomePage() {
                 }}
               >
                 <Text style={tableStyles.cellText}>
-                  Rp {product.harga.toLocaleString("id-ID")}
+                  {formatRupiah(product.harga)}
                 </Text>
                 <MaterialCommunityIcons
                   name="chevron-right"
