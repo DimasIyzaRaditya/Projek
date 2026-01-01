@@ -66,7 +66,7 @@ export default function Navbar() {
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center space-x-2 cursor-pointer">
             <img src="/favicon.ico" alt="Ahmeng Trade" className="h-8 w-8" />
             <span className="text-xl font-bold text-neutral-50">Ahmeng Trade</span>
           </Link>
@@ -91,7 +91,7 @@ export default function Navbar() {
                     <button
                       key={product.id}
                       onClick={() => handleProductClick(product.id)}
-                      className="w-full px-4 py-3 text-left hover:bg-neutral-800 transition-colors border-b border-neutral-800 last:border-b-0"
+                      className="w-full px-4 py-3 text-left hover:bg-neutral-800 transition-colors border-b border-neutral-800 last:border-b-0 cursor-pointer"
                     >
                       <p className="text-neutral-100 font-medium text-sm">{product.nama}</p>
                       <p className="text-neutral-400 text-xs">Rp {product.harga.toLocaleString('id-ID')}</p>
@@ -146,7 +146,7 @@ export default function Navbar() {
                   <button
                     key={product.id}
                     onClick={() => handleProductClick(product.id)}
-                    className="w-full px-4 py-3 text-left hover:bg-neutral-800 transition-colors border-b border-neutral-800 last:border-b-0"
+                    className="w-full px-4 py-3 text-left hover:bg-neutral-800 transition-colors border-b border-neutral-800 last:border-b-0 cursor-pointer"
                   >
                     <p className="text-neutral-100 font-medium text-sm">{product.nama}</p>
                     <p className="text-neutral-400 text-xs">Rp {product.harga.toLocaleString('id-ID')}</p>
