@@ -102,15 +102,7 @@ export default function Landingpage() {
 
       >
         {/* Footer Bottom - Copyright */}
-        <View
-          style={{
-            marginTop: 32, // Margin atas 32px
-            borderTopWidth: 1, // Lebar border atas 1px
-            borderTopColor: "#262626", // Warna border abu gelap
-            paddingTop: 32, // Padding atas 32px
-            alignItems: "center", // Rata tengah
-          }}
-        >
+        <View style={{ alignItems: "center" }}>
           {/* Text copyright */}
           <Text style={{ fontSize: 13, color: "#a3a3a3", textAlign: "center" }}>
             © 2025 Ahmeng Trade. All rights reserved.
