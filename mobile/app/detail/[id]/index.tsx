@@ -409,22 +409,6 @@ export default function ProductDetailPage() {
               Beli Sekarang
             </Text>
           </Pressable>
-          <Pressable
-            style={{
-              borderWidth: 1,
-              borderColor: "#404040",
-              paddingVertical: 14,
-              borderRadius: 6,
-              alignItems: "center",
-            }}
-            onPress={() =>
-              Alert.alert("Info", "Fitur keranjang belum tersedia")
-            }
-          >
-            <Text style={{ fontSize: 14, fontWeight: "600", color: "#fafafa" }}>
-              Tambah ke Keranjang
-            </Text>
-          </Pressable>
         </View>
       </View>
     </ScrollView>
