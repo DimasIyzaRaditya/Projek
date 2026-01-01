@@ -90,42 +90,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="border-b border-neutral-800 bg-neutral-950 py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
-            <div className="text-center">
-              <div className="mb-2 flex justify-center">
-                <Download className="h-8 w-8 text-neutral-400" />
-              </div>
-              <div className="text-3xl font-bold text-neutral-50">10K+</div>
-              <div className="text-sm text-neutral-400">Total Download</div>
-            </div>
-            <div className="text-center">
-              <div className="mb-2 flex justify-center">
-                <TrendingUp className="h-8 w-8 text-neutral-400" />
-              </div>
-              <div className="text-3xl font-bold text-neutral-50">500+</div>
-              <div className="text-sm text-neutral-400">Produk Digital</div>
-            </div>
-            <div className="text-center">
-              <div className="mb-2 flex justify-center">
-                <Star className="h-8 w-8 text-neutral-400" />
-              </div>
-              <div className="text-3xl font-bold text-neutral-50">4.8</div>
-              <div className="text-sm text-neutral-400">Rating Rata-rata</div>
-            </div>
-            <div className="text-center">
-              <div className="mb-2 flex justify-center">
-                <Award className="h-8 w-8 text-neutral-400" />
-              </div>
-              <div className="text-3xl font-bold text-neutral-50">100+</div>
-              <div className="text-sm text-neutral-400">Penjual Terpercaya</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Featured Products */}
       <section className="py-16">
         <div className="container mx-auto px-4">
