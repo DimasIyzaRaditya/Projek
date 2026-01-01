@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation"
 import Navbar from "@/components/navbar"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Users, Package, ShoppingCart, LogOut, Loader2, AlertCircle } from "lucide-react"
+import { Users, Package, ShoppingCart, LogOut, Loader2, AlertCircle, FileDown } from "lucide-react"
 import { API_TRANSAKSI, API_USER, API_PRODUK } from "@/lib/api"
 import { formatRupiah, formatWIB } from "@/lib/scripts"
+import { exportTransaksiToPDF, exportMultipleTransaksiToPDF } from "@/lib/export-pdf"
 
 
 interface User {
@@ -205,39 +206,61 @@ export default function AdminPage() {
             {/* Transaksi Table */}
             <Card className="border-neutral-800 bg-neutral-900/50">
               <CardHeader>
-                <CardTitle className="text-neutral-50">Data Transaksi Terbaru</CardTitle>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-neutral-50">Data Transaksi Terbaru</CardTitle>
+                  <Button
+                    onClick={() => exportMultipleTransaksiToPDF(transaksi)}
+                    disabled={transaksi.length === 0}
+                    className="bg-neutral-50 text-neutral-900 hover:bg-white"
+                    size="sm"
+                  >
+                    <FileDown className="h-4 w-4 mr-2" />
+                    Export PDF
+                  </Button>
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b border-neutral-800">
-                        <th className="px-4 py-3 text-left font-semibold text-neutral-50">ID</th>
+                        <th className="px-4 py-3 text-left font-semibold text-neutral-50">No</th>
                         <th className="px-4 py-3 text-left font-semibold text-neutral-50">Nama Pembeli</th>
                         <th className="px-4 py-3 text-left font-semibold text-neutral-50">Email</th>
                         <th className="px-4 py-3 text-left font-semibold text-neutral-50">Username</th>
                         <th className="px-4 py-3 text-left font-semibold text-neutral-50">Produk</th>
                         <th className="px-4 py-3 text-left font-semibold text-neutral-50">Harga</th>
                         <th className="px-4 py-3 text-left font-semibold text-neutral-50">Tanggal</th>
+                        <th className="px-4 py-3 text-left font-semibold text-neutral-50">Aksi</th>
                       </tr>
                     </thead>
                     <tbody>
                       {transaksi.length === 0 ? (
                         <tr>
-                          <td colSpan={7} className="px-4 py-6 text-center text-neutral-400">
+                          <td colSpan={8} className="px-4 py-6 text-center text-neutral-400">
                             Tidak ada transaksi
                           </td>
                         </tr>
                       ) : (
-                        transaksi.slice(0, 10).map((transaksi) => (
+                        transaksi.slice(0, 10).map((transaksi, index) => (
                           <tr key={transaksi.id} className="border-b border-neutral-800 hover:bg-neutral-800/50">
-                            <td className="px-4 py-3 text-neutral-50">{transaksi.id}</td>
+                            <td className="px-4 py-3 text-neutral-50">{index + 1}</td>
                             <td className="px-4 py-3 text-neutral-50">{transaksi.namaPembeli || transaksi.user?.name || "-"}</td>
                             <td className="px-4 py-3 text-neutral-50 text-xs">{transaksi.emailPembeli || "-"}</td>
                             <td className="px-4 py-3 text-neutral-50 text-xs">{transaksi.user?.username || "-"}</td>
                             <td className="px-4 py-3 text-neutral-50">{transaksi.produk?.nama || "-"}</td>
                             <td className="px-4 py-3 text-neutral-50">{formatRupiah(transaksi.totalHarga || 0)}</td>
                             <td className="px-4 py-3 text-neutral-400 text-xs">{formatWIB(transaksi.createdAt)}</td>
+                            <td className="px-4 py-3">
+                              <Button
+                                onClick={() => exportTransaksiToPDF(transaksi)}
+                                variant="ghost"
+                                size="sm"
+                                className="text-neutral-400 hover:text-neutral-50 hover:bg-neutral-800"
+                              >
+                                <FileDown className="h-4 w-4" />
+                              </Button>
+                            </td>
                           </tr>
                         ))
                       )}
