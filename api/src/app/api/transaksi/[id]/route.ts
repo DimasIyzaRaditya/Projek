@@ -12,19 +12,11 @@ export async function GET(
       where: { id: parseInt(id) },
       select: {
         id: true,
-        userId: true,
         produkId: true,
         namaPembeli: true,
         emailPembeli: true,
         totalHarga: true,
         createdAt: true,
-        user: {
-          select: {
-            id: true,
-            name: true,
-            username: true,
-          },
-        },
         produk: true,
       },
     });
@@ -53,20 +45,9 @@ export async function PUT(
   try {
     const { id } = await params;
     const body = await request.json();
-    const { userId, produkId, totalHarga } = body;
+    const { produkId, totalHarga, namaPembeli, emailPembeli } = body;
 
     const updateData: any = {};
-    
-    if (userId) {
-      const user = await prisma.user.findUnique({ where: { id: userId } });
-      if (!user) {
-        return NextResponse.json(
-          { error: 'User not found' },
-          { status: 404 }
-        );
-      }
-      updateData.userId = userId;
-    }
 
     if (produkId) {
       const produk = await prisma.produk.findUnique({ where: { id: produkId } });
@@ -89,17 +70,18 @@ export async function PUT(
       updateData.totalHarga = totalHarga;
     }
 
+    if (namaPembeli) {
+      updateData.namaPembeli = namaPembeli.trim();
+    }
+
+    if (emailPembeli) {
+      updateData.emailPembeli = emailPembeli.trim();
+    }
+
     const transaksi = await prisma.transaksi.update({
       where: { id: parseInt(id) },
       data: updateData,
       include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            username: true,
-          },
-        },
         produk: true,
       },
     });
@@ -114,7 +96,7 @@ export async function PUT(
     }
     if (error.code === 'P2003') {
       return NextResponse.json(
-        { error: 'Invalid userId or produkId' },
+        { error: 'Invalid produkId' },
         { status: 400 }
       );
     }
