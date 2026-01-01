@@ -7,19 +7,11 @@ export async function GET() {
     const transaksi = await prisma.transaksi.findMany({
       select: {
         id: true,
-        userId: true,
         produkId: true,
         namaPembeli: true,
         emailPembeli: true,
         totalHarga: true,
         createdAt: true,
-        user: {
-          select: {
-            id: true,
-            name: true,
-            username: true,
-          },
-        },
         produk: true,
       },
       orderBy: {
@@ -39,11 +31,11 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { userId, produkId, totalHarga, namaPembeli, emailPembeli } = body;
+    const { produkId, totalHarga, namaPembeli, emailPembeli } = body;
 
-    if (!userId || !produkId || !totalHarga) {
+    if (!produkId || !totalHarga || !namaPembeli || !emailPembeli) {
       return NextResponse.json(
-        { error: "userId, produkId, and totalHarga are required" },
+        { error: "produkId, totalHarga, namaPembeli, and emailPembeli are required" },
         { status: 400 }
       );
     }
@@ -55,29 +47,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (namaPembeli && typeof namaPembeli !== "string") {
+    if (typeof namaPembeli !== "string" || !namaPembeli.trim()) {
       return NextResponse.json(
-        { error: "namaPembeli must be a string" },
+        { error: "namaPembeli must be a valid string" },
         { status: 400 }
       );
     }
 
-    if (emailPembeli && typeof emailPembeli !== "string") {
+    if (typeof emailPembeli !== "string" || !emailPembeli.trim()) {
       return NextResponse.json(
-        { error: "emailPembeli must be a string" },
+        { error: "emailPembeli must be a valid string" },
         { status: 400 }
       );
     }
 
-    // Verify user and produk exist
-    const [user, produk] = await Promise.all([
-      prisma.user.findUnique({ where: { id: userId } }),
-      prisma.produk.findUnique({ where: { id: produkId } }),
-    ]);
-
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
-    }
+    // Verify produk exists
+    const produk = await prisma.produk.findUnique({ where: { id: produkId } });
 
     if (!produk) {
       return NextResponse.json({ error: "Produk not found" }, { status: 404 });
@@ -85,20 +70,12 @@ export async function POST(request: NextRequest) {
 
     const transaksi = await prisma.transaksi.create({
       data: {
-        userId,
         produkId,
         totalHarga,
-        namaPembeli: namaPembeli || null,
-        emailPembeli: emailPembeli || null,
+        namaPembeli: namaPembeli.trim(),
+        emailPembeli: emailPembeli.trim(),
       },
       include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            username: true,
-          },
-        },
         produk: true,
       },
     });
