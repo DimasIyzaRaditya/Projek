@@ -120,49 +120,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="border-t border-neutral-800 bg-neutral-950 py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid gap-8 md:grid-cols-4">
-            <div>
-              <h3 className="mb-4 text-lg font-semibold text-neutral-50">DigitalMarket</h3>
-              <p className="text-sm text-neutral-400">
-                Platform jual beli file digital terpercaya di Indonesia
-              </p>
-            </div>
-            <div>
-              <h4 className="mb-4 text-sm font-semibold text-neutral-50">Produk</h4>
-              <ul className="space-y-2 text-sm text-neutral-400">
-                <li>Template</li>
-                <li>E-Book</li>
-                <li>Source Code</li>
-                <li>Assets</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="mb-4 text-sm font-semibold text-neutral-50">Perusahaan</h4>
-              <ul className="space-y-2 text-sm text-neutral-400">
-                <li>Tentang Kami</li>
-                <li>Kontak</li>
-                <li>Karir</li>
-                <li>Blog</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="mb-4 text-sm font-semibold text-neutral-50">Legal</h4>
-              <ul className="space-y-2 text-sm text-neutral-400">
-                <li>Syarat & Ketentuan</li>
-                <li>Kebijakan Privasi</li>
-                <li>Kebijakan Pengembalian</li>
-              </ul>
-            </div>
-          </div>
-          <div className="mt-8 border-t border-neutral-800 pt-8 text-center text-sm text-neutral-400">
-            © 2025 Ahmeng Trade. All rights reserved.
-          </div>
-        </div>
-      </footer>
     </div>
   )
 }
