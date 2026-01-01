@@ -205,9 +205,6 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                     <ShoppingCart className="h-5 w-5 mr-2" />
                     Beli Sekarang
                   </Button>
-                  <Button variant="outline" className="w-full border-neutral-700 hover:bg-neutral-800" size="lg">
-                    Tambah ke Keranjang
-                  </Button>
                 </div>
 
                 {/* Features */}
