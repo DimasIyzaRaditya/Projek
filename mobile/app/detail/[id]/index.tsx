@@ -1,22 +1,31 @@
-import { View, Text, Alert, Pressable, ScrollView } from "react-native";
+// Import komponen dari React Native untuk UI dan interaksi
+import { View, Text, Alert, Pressable, ScrollView, TextInput, Modal, ActivityIndicator } from "react-native";
+// Import React dan hooks
 import React, { useEffect, useState } from "react";
+// Import hooks dari expo-router untuk routing dan parameter
 import { useLocalSearchParams, useRouter } from "expo-router";
+// Import icon dari expo vector icons
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+// Import endpoint API untuk produk
 import { API_PRODUK_BY_ID } from "@/scripts/api";
-import { formatRupiah } from "@/scripts/helpers";
+// Import helper functions untuk format dan transaksi
+import { formatRupiah, createTransaksi } from "@/scripts/helpers";
 
+// Interface untuk tipe data Produk
 interface Produk {
-  id: number;
-  nama: string;
-  harga: number;
-  deskripsi?: string;
-  rating?: number;
-  downloads?: number;
+  id: number; // ID produk
+  nama: string; // Nama produk
+  harga: number; // Harga produk
+  deskripsi?: string; // Deskripsi produk (optional)
+  rating?: number; // Rating produk (optional)
+  downloads?: number; // Jumlah download (optional)
 }
 
+// Fungsi untuk mendapatkan icon berdasarkan judul produk
 const getIconByTitle = (title: string): string => {
-  const lowerTitle = title.toLowerCase();
+  const lowerTitle = title.toLowerCase(); // Konversi ke lowercase untuk matching
 
+  // Cek apakah produk adalah ebook
   if (
     lowerTitle.includes("ebook") ||
     lowerTitle.includes("e-book") ||
@@ -24,6 +33,7 @@ const getIconByTitle = (title: string): string => {
   ) {
     return "book-open";
   }
+  // Cek apakah produk adalah source code
   if (
     lowerTitle.includes("source code") ||
     lowerTitle.includes("script") ||
@@ -31,6 +41,7 @@ const getIconByTitle = (title: string): string => {
   ) {
     return "code-braces";
   }
+  // Cek apakah produk adalah design/icon
   if (
     lowerTitle.includes("icon") ||
     lowerTitle.includes("design") ||
@@ -39,6 +50,7 @@ const getIconByTitle = (title: string): string => {
   ) {
     return "palette";
   }
+  // Cek apakah produk adalah template UI
   if (
     lowerTitle.includes("template") ||
     lowerTitle.includes("ui") ||
@@ -48,12 +60,15 @@ const getIconByTitle = (title: string): string => {
     return "layout-grid";
   }
 
+  // Default icon jika tidak match
   return "download";
 };
 
+// Fungsi untuk generate deskripsi otomatis berdasarkan nama produk
 const generateDescription = (nama: string) => {
   const lowerNama = nama.toLowerCase();
 
+  // Generate deskripsi untuk ebook
   if (
     lowerNama.includes("ebook") ||
     lowerNama.includes("e-book") ||
@@ -62,6 +77,7 @@ const generateDescription = (nama: string) => {
     return `${nama}\n\nE-Book digital berkualitas tinggi dengan konten lengkap dan mendalam.\n\nYang Anda dapatkan:\n• Format PDF berkualitas tinggi\n• Konten lengkap dan terstruktur\n• Mudah dibaca di berbagai perangkat\n• Lifetime access\n• Free updates`;
   }
 
+  // Generate deskripsi untuk source code
   if (
     lowerNama.includes("source code") ||
     lowerNama.includes("script") ||
@@ -70,6 +86,7 @@ const generateDescription = (nama: string) => {
     return `${nama}\n\nSource code lengkap dan siap pakai.\n\nYang Anda dapatkan:\n• Source code lengkap\n• Dokumentasi penggunaan\n• Clean code & best practices\n• Easy to customize\n• Lifetime access\n• Free updates`;
   }
 
+  // Generate deskripsi untuk template
   if (
     lowerNama.includes("template") ||
     lowerNama.includes("ui") ||
@@ -78,6 +95,7 @@ const generateDescription = (nama: string) => {
     return `${nama}\n\nTemplate UI/UX modern dan responsive.\n\nYang Anda dapatkan:\n• Design modern & clean\n• Fully responsive\n• Komponen siap pakai\n• Easy to customize\n• Lifetime access\n• Free updates`;
   }
 
+  // Generate deskripsi untuk icon/design
   if (
     lowerNama.includes("icon") ||
     lowerNama.includes("design") ||
@@ -87,44 +105,66 @@ const generateDescription = (nama: string) => {
     return `${nama}\n\nKoleksi aset design berkualitas tinggi.\n\nYang Anda dapatkan:\n• File berkualitas tinggi\n• Multiple format\n• Easy to use\n• Scalable vector\n• Lifetime access\n• Free updates`;
   }
 
+  // Deskripsi default
   return `${nama}\n\nProduk digital berkualitas tinggi yang siap digunakan.\n\nYang Anda dapatkan:\n• Kualitas terbaik\n• Instant download\n• Lifetime access\n• Free updates`;
 };
 
+// Komponen halaman detail produk
 export default function ProductDetailPage() {
-  // buat state
+  // Hook untuk navigasi
   const router = useRouter();
+  // Ambil parameter ID dari URL
   const { id } = useLocalSearchParams();
+  // State untuk menyimpan data produk
   const [product, setProduct] = useState<Produk | null>(null);
+  // State untuk loading status
   const [loading, setLoading] = useState(true);
+  // State untuk modal pembelian
+  const [buyModalVisible, setBuyModalVisible] = useState(false);
+  // State untuk loading saat proses pembelian
+  const [purchaseLoading, setPurchaseLoading] = useState(false);
+  // State untuk modal sukses pembelian
+  const [successModalVisible, setSuccessModalVisible] = useState(false);
+  // State untuk form data pembelian
+  const [formData, setFormData] = useState({
+    namaPembeli: "", // Nama pembeli
+    emailPembeli: "", // Email pembeli
+  });
 
+  // useEffect untuk fetch data produk saat komponen dimount
   useEffect(() => {
+    // Fungsi async untuk mengambil data produk dari API
     const fetchProduct = async () => {
       try {
+        // Fetch data produk berdasarkan ID
         const res = await fetch(API_PRODUK_BY_ID(Number(id)));
         if (!res.ok) throw new Error("Failed to fetch");
         const data = await res.json();
 
         const produk = data.data;
+        // Set product dengan data dari API + generate deskripsi & rating random
         setProduct({
           ...produk,
-          deskripsi: generateDescription(produk.nama),
-          rating: 4.5 + Math.random() * 0.4,
-          downloads: Math.floor(100 + Math.random() * 900),
+          deskripsi: generateDescription(produk.nama), // Generate deskripsi otomatis
+          rating: 4.5 + Math.random() * 0.4, // Rating random 4.5-4.9
+          downloads: Math.floor(100 + Math.random() * 900), // Download random 100-1000
         });
       } catch (error) {
         console.error("Error fetching produk:", error);
         Alert.alert("Error", "Gagal memuat produk");
-        router.back();
+        router.back(); // Kembali jika gagal load
       } finally {
-        setLoading(false);
+        setLoading(false); // Set loading false setelah selesai
       }
     };
 
+    // Panggil fetch hanya jika ID ada
     if (id) {
       fetchProduct();
     }
   }, [id, router]);
 
+  // Jika masih loading, tampilkan loading screen
   if (loading) {
     return (
       <View
@@ -140,6 +180,7 @@ export default function ProductDetailPage() {
     );
   }
 
+  // Jika produk tidak ditemukan, tampilkan error screen
   if (!product) {
     return (
       <View
@@ -172,6 +213,7 @@ export default function ProductDetailPage() {
         >
           Produk yang Anda cari tidak tersedia
         </Text>
+        {/* Tombol kembali */}
         <Pressable
           onPress={() => router.back()}
           style={{
@@ -190,10 +232,11 @@ export default function ProductDetailPage() {
   }
 
   return (
+    // ScrollView untuk konten yang bisa di-scroll
     <ScrollView style={{ flex: 1, backgroundColor: "#0a0a0a" }}>
-      {/* Back Button */}
+      {/* Tombol Kembali */}
       <Pressable
-        onPress={() => router.back()}
+        onPress={() => router.back()} // Kembali ke halaman sebelumnya
         style={{
           flexDirection: "row",
           alignItems: "center",
@@ -211,10 +254,10 @@ export default function ProductDetailPage() {
         <Text style={{ fontSize: 14, color: "#fafafa" }}>Kembali</Text>
       </Pressable>
 
-      {/* Product Image */}
+      {/* Gambar/Icon Produk */}
       <View
         style={{
-          aspectRatio: 16 / 9,
+          aspectRatio: 16 / 9, // Ratio 16:9
           backgroundColor: "rgba(64, 64, 64, 0.5)",
           justifyContent: "center",
           alignItems: "center",
@@ -223,6 +266,7 @@ export default function ProductDetailPage() {
           marginBottom: 20,
         }}
       >
+        {/* Icon dinamis berdasarkan nama produk */}
         <MaterialCommunityIcons
           name={getIconByTitle(product.nama) as any}
           size={48}
@@ -230,10 +274,11 @@ export default function ProductDetailPage() {
         />
       </View>
 
-      {/* Product Content */}
+      {/* Konten Detail Produk */}
       <View style={{ paddingHorizontal: 16, paddingBottom: 32 }}>
-        {/* Title & Rating */}
+        {/* Section Judul & Rating */}
         <View style={{ marginBottom: 24 }}>
+          {/* Nama Produk */}
           <Text
             style={{
               fontSize: 24,
@@ -244,6 +289,7 @@ export default function ProductDetailPage() {
           >
             {product.nama}
           </Text>
+          {/* Rating dan Download Count */}
           <View
             style={{
               flexDirection: "row",
@@ -251,6 +297,7 @@ export default function ProductDetailPage() {
               marginBottom: 16,
             }}
           >
+            {/* Rating */}
             <View
               style={{
                 flexDirection: "row",
@@ -270,6 +317,7 @@ export default function ProductDetailPage() {
                 {product.rating?.toFixed(1)}
               </Text>
             </View>
+            {/* Download Count */}
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <MaterialCommunityIcons
                 name="download"
@@ -282,7 +330,7 @@ export default function ProductDetailPage() {
             </View>
           </View>
 
-          {/* Price */}
+          {/* Harga Produk */}
           <Text style={{ fontSize: 32, fontWeight: "bold", color: "#fafafa" }}>
             {formatRupiah(product.harga)}
           </Text>
@@ -384,7 +432,7 @@ export default function ProductDetailPage() {
           </View>
         </View>
 
-        {/* Action Buttons */}
+        {/* Tombol Action - Beli Sekarang */}
         <View style={{ gap: 12 }}>
           <Pressable
             style={{
@@ -395,9 +443,7 @@ export default function ProductDetailPage() {
               flexDirection: "row",
               justifyContent: "center",
             }}
-            onPress={() =>
-              Alert.alert("Info", "Fitur pembelian belum tersedia")
-            }
+            onPress={() => setBuyModalVisible(true)} // Buka modal pembelian
           >
             <MaterialCommunityIcons
               name="cart"
@@ -411,6 +457,309 @@ export default function ProductDetailPage() {
           </Pressable>
         </View>
       </View>
+
+      {/* Modal untuk Form Pembelian */}
+      <Modal
+        visible={buyModalVisible} // Kontrol visibility modal
+        transparent // Background transparan
+        animationType="slide" // Animasi slide dari bawah
+        onRequestClose={() => setBuyModalVisible(false)} // Handle close
+      >
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "rgba(0,0,0,0.8)", // Overlay gelap
+            justifyContent: "flex-end", // Posisi di bawah
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: "#171717",
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
+              padding: 20,
+              paddingBottom: 40,
+            }}
+          >
+            {/* Header Modal */}
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: 20,
+              }}
+            >
+              <Text style={{ fontSize: 18, fontWeight: "bold", color: "#fafafa" }}>
+                Konfirmasi Pembelian
+              </Text>
+              {/* Tombol Close */}
+              <Pressable onPress={() => setBuyModalVisible(false)}>
+                <MaterialCommunityIcons name="close" size={24} color="#fafafa" />
+              </Pressable>
+            </View>
+
+            {/* Deskripsi Modal */}
+            <Text style={{ fontSize: 14, color: "#a3a3a3", marginBottom: 20 }}>
+              Lengkapi data pembeli untuk melanjutkan pembelian {product?.nama}
+            </Text>
+
+            {/* Form Input */}
+            <View style={{ gap: 16, marginBottom: 20 }}>
+              {/* Input Nama Pembeli */}
+              <View>
+                <Text style={{ fontSize: 14, color: "#fafafa", marginBottom: 8 }}>
+                  Nama Pembeli *
+                </Text>
+                <TextInput
+                  placeholder="Masukkan nama pembeli"
+                  placeholderTextColor="#737373"
+                  value={formData.namaPembeli}
+                  onChangeText={(text) =>
+                    setFormData({ ...formData, namaPembeli: text })
+                  }
+                  style={{
+                    backgroundColor: "#262626",
+                    borderWidth: 1,
+                    borderColor: "#404040",
+                    borderRadius: 8,
+                    paddingHorizontal: 16,
+                    paddingVertical: 12,
+                    color: "#fafafa",
+                    fontSize: 14,
+                  }}
+                />
+              </View>
+
+              {/* Input Email Pembeli */}
+              <View>
+                <Text style={{ fontSize: 14, color: "#fafafa", marginBottom: 8 }}>
+                  Email Pembeli *
+                </Text>
+                <TextInput
+                  placeholder="pembeli@example.com"
+                  placeholderTextColor="#737373"
+                  value={formData.emailPembeli}
+                  onChangeText={(text) =>
+                    setFormData({ ...formData, emailPembeli: text })
+                  }
+                  keyboardType="email-address" // Keyboard email
+                  autoCapitalize="none" // Nonaktifkan auto capitalize
+                  style={{
+                    backgroundColor: "#262626",
+                    borderWidth: 1,
+                    borderColor: "#404040",
+                    borderRadius: 8,
+                    paddingHorizontal: 16,
+                    paddingVertical: 12,
+                    color: "#fafafa",
+                    fontSize: 14,
+                  }}
+                />
+              </View>
+
+              {/* Display Total Pembayaran */}
+              <View
+                style={{
+                  backgroundColor: "#262626",
+                  padding: 16,
+                  borderRadius: 8,
+                  borderWidth: 1,
+                  borderColor: "#404040",
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text style={{ fontSize: 14, color: "#a3a3a3" }}>
+                    Total Pembayaran:
+                  </Text>
+                  <Text style={{ fontSize: 24, fontWeight: "bold", color: "#fafafa" }}>
+                    {formatRupiah(product?.harga || 0)}
+                  </Text>
+                </View>
+              </View>
+            </View>
+
+            {/* Tombol Action Modal */}
+            <View style={{ flexDirection: "row", gap: 12 }}>
+              {/* Tombol Batal */}
+              <Pressable
+                onPress={() => setBuyModalVisible(false)}
+                disabled={purchaseLoading}
+                style={{
+                  flex: 1,
+                  backgroundColor: "#262626",
+                  paddingVertical: 14,
+                  borderRadius: 8,
+                  alignItems: "center",
+                  borderWidth: 1,
+                  borderColor: "#404040",
+                }}
+              >
+                <Text style={{ fontSize: 14, fontWeight: "600", color: "#fafafa" }}>
+                  Batal
+                </Text>
+              </Pressable>
+              {/* Tombol Konfirmasi Pembelian */}
+              <Pressable
+                onPress={async () => {
+                  // Validasi nama pembeli tidak boleh kosong
+                  if (!formData.namaPembeli.trim()) {
+                    Alert.alert("Validasi", "Nama pembeli harus diisi");
+                    return;
+                  }
+                  // Validasi email pembeli tidak boleh kosong
+                  if (!formData.emailPembeli.trim()) {
+                    Alert.alert("Validasi", "Email pembeli harus diisi");
+                    return;
+                  }
+                  // Validasi format email
+                  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                  if (!emailRegex.test(formData.emailPembeli)) {
+                    Alert.alert("Validasi", "Format email tidak valid");
+                    return;
+                  }
+
+                  setPurchaseLoading(true); // Set loading true
+                  try {
+                    // Kirim request create transaksi ke API
+                    await createTransaksi({
+                      produkId: product!.id,
+                      totalHarga: product!.harga,
+                      namaPembeli: formData.namaPembeli.trim(),
+                      emailPembeli: formData.emailPembeli.trim(),
+                    });
+                    setBuyModalVisible(false); // Tutup modal pembelian
+                    setSuccessModalVisible(true); // Buka modal sukses
+                    setFormData({ namaPembeli: "", emailPembeli: "" }); // Reset form
+                  } catch (err: any) {
+                    Alert.alert("Error", err.message || "Gagal membeli produk");
+                  } finally {
+                    setPurchaseLoading(false); // Set loading false
+                  }
+                }}
+                disabled={purchaseLoading}
+                style={{
+                  flex: 1,
+                  backgroundColor: "#fafafa",
+                  paddingVertical: 14,
+                  borderRadius: 8,
+                  alignItems: "center",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                }}
+              >
+                {/* Tampilkan loading indicator atau text */}
+                {purchaseLoading ? (
+                  <ActivityIndicator size="small" color="#0a0a0a" />
+                ) : (
+                  <Text style={{ fontSize: 14, fontWeight: "600", color: "#0a0a0a" }}>
+                    Konfirmasi
+                  </Text>
+                )}
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Modal Sukses Pembelian */}
+      <Modal
+        visible={successModalVisible}
+        transparent
+        animationType="fade" // Animasi fade
+        onRequestClose={() => {
+          setSuccessModalVisible(false);
+          router.push("/public"); // Redirect ke public page
+        }}
+      >
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "rgba(0,0,0,0.8)", // Overlay gelap
+            justifyContent: "center",
+            alignItems: "center",
+            paddingHorizontal: 20,
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: "#171717",
+              borderRadius: 16,
+              padding: 32,
+              width: "100%",
+              maxWidth: 400,
+              alignItems: "center",
+            }}
+          >
+            {/* Icon Sukses */}
+            <View
+              style={{
+                backgroundColor: "rgba(34, 197, 94, 0.1)", // Background hijau transparan
+                borderRadius: 50,
+                padding: 16,
+                marginBottom: 20,
+              }}
+            >
+              <MaterialCommunityIcons
+                name="check-circle"
+                size={48}
+                color="#22c55e" // Warna hijau
+              />
+            </View>
+            {/* Text Sukses */}
+            <Text
+              style={{
+                fontSize: 24,
+                fontWeight: "bold",
+                color: "#fafafa",
+                marginBottom: 12,
+                textAlign: "center",
+              }}
+            >
+              Pembelian Berhasil!
+            </Text>
+            {/* Pesan Terima Kasih */}
+            <Text
+              style={{
+                fontSize: 14,
+                color: "#a3a3a3",
+                textAlign: "center",
+                marginBottom: 24,
+              }}
+            >
+              Terima kasih telah membeli{" "}
+              <Text style={{ fontWeight: "600", color: "#fafafa" }}>
+                {product?.nama}
+              </Text>
+            </Text>
+            {/* Tombol Kembali ke Beranda */}
+            <Pressable
+              onPress={() => {
+                setSuccessModalVisible(false);
+                router.push("/public"); // Redirect ke public page
+              }}
+              style={{
+                backgroundColor: "#fafafa",
+                paddingHorizontal: 32,
+                paddingVertical: 14,
+                borderRadius: 8,
+                width: "100%",
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ fontSize: 14, fontWeight: "600", color: "#0a0a0a" }}>
+                Kembali ke Beranda
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   );
 }
