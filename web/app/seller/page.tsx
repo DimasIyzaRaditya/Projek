@@ -212,16 +212,16 @@ export default function SellerPage() {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-neutral-800">
-                      <th className="px-4 py-3 text-left font-semibold text-neutral-50">ID</th>
+                      <th className="px-4 py-3 text-left font-semibold text-neutral-50">No</th>
                       <th className="px-4 py-3 text-left font-semibold text-neutral-50">Nama Produk</th>
                       <th className="px-4 py-3 text-left font-semibold text-neutral-50">Harga</th>
                       <th className="px-4 py-3 text-left font-semibold text-neutral-50">Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {produkList.map((Produk) => (
+                    {produkList.map((Produk, index) => (
                       <tr key={Produk.id} className="border-b border-neutral-800 hover:bg-neutral-800/50">
-                        <td className="px-4 py-3 text-neutral-50">{Produk.id}</td>
+                        <td className="px-4 py-3 text-neutral-50">{index + 1}</td>
                         <td className="px-4 py-3 text-neutral-50">{Produk.nama}</td>
                         <td className="px-4 py-3 text-neutral-50">{formatRupiah(Produk.harga)}</td>
                         <td className="px-4 py-3">
