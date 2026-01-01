@@ -1,3 +1,5 @@
+import { API_TRANSAKSI } from './api';
+
 // format rupiah
 export function formatRupiah(amount: number | undefined): string {
   if (!amount) return 'Rp 0';
@@ -77,4 +79,26 @@ export function sanitizeInput(text: string): string {
   return text
     .replace(/[<>{}[\]\\\/=]/g, '') // Hapus simbol berbahaya
     .trim();
+}
+// create transaksi
+export async function createTransaksi(data: {
+  produkId: number;
+  totalHarga: number;
+  namaPembeli: string;
+  emailPembeli: string;
+}) {
+  const response = await fetch(API_TRANSAKSI, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to create transaksi');
+  }
+
+  return response.json();
 }
