@@ -1,10 +1,18 @@
+// Import komponen dari React Native untuk UI
 import { View, Text, ScrollView, Pressable } from "react-native";
+// Import React dan useEffect hook
 import React, { useEffect } from "react";
+// Import useRouter untuk navigasi
 import { useRouter } from "expo-router";
+// Import AsyncStorage untuk menyimpan data lokal
 import AsyncStorage from "@react-native-async-storage/async-storage";
+// Import icon dari expo vector icons
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+// Import endpoint API
 import { API_TRANSAKSI, API_USER, API_PRODUK } from "@/scripts/api";
+// Import helper functions untuk format
 import { formatRupiah, formatWIB } from "@/scripts/helpers";
+// Import styles yang sudah didefinisikan
 import {
   colors,
   commonStyles,
@@ -17,18 +25,21 @@ import {
   typography,
 } from "@/app/styles";
 
+// Tipe data untuk User
 type User = {
   id?: number;
   name?: string;
   username?: string;
 };
 
+// Tipe data untuk Produk
 type Produk = {
   id?: number;
   nama?: string;
   harga?: number;
 };
 
+// Tipe data untuk Transaksi
 type Transaksi = {
   id?: number;
   user?: User;
@@ -39,24 +50,36 @@ type Transaksi = {
   createdAt?: string;
 };
 
+// Komponen halaman Admin Dashboard
 export default function AdminPage() {
+  // Hook untuk navigasi
   const router = useRouter();
+  // State untuk loading status
   const [loading, setLoading] = React.useState(true);
+  // State untuk menyimpan daftar transaksi
   const [transaksi, setTransaksi] = React.useState<Transaksi[]>([]);
+  // State untuk menyimpan statistik dashboard
   const [stats, setStats] = React.useState({
-    totalProduk: 0,
-    totalTransaksi: 0,
+    totalUser: 0, // Total jumlah user
+    totalProduk: 0, // Total jumlah produk
+    totalTransaksi: 0, // Total jumlah transaksi
+    totalRevenue: 0, // Total pendapatan
   });
 
+  // useEffect untuk fetch data saat komponen dimount
   useEffect(() => {
+    // Fungsi untuk mengambil data dari API
     const fetchData = async () => {
-      setLoading(true);
+      setLoading(true); // Set loading true
       try {
+        // Fetch data transaksi dari API
         const resTransaksi = await fetch(API_TRANSAKSI);
         const jsonTransaksi = await resTransaksi.json();
         console.log("Transaksi data:", jsonTransaksi.data);
+        // Simpan data transaksi ke state
         setTransaksi(jsonTransaksi.data || []);
 
+        // Fetch data user dan produk secara paralel
         const [resUser, resProduk] = await Promise.all([
           fetch(API_USER),
           fetch(API_PRODUK),
@@ -65,33 +88,46 @@ export default function AdminPage() {
         const jsonUser = await resUser.json();
         const jsonProduk = await resProduk.json();
 
+        // Hitung total revenue dari semua transaksi
+        const totalRevenue = (jsonTransaksi.data || []).reduce(
+          (sum: number, t: Transaksi) => sum + (t.totalHarga || 0),
+          0
+        );
+
+        // Update state statistik
         setStats({
+          totalUser: jsonUser.data?.length || 0,
           totalProduk: jsonProduk.data?.length || 0,
           totalTransaksi: jsonTransaksi.data?.length || 0,
+          totalRevenue: totalRevenue,
         });
       } catch (e) {
         console.error("Error fetching data:", e);
       }
-      setLoading(false);
+      setLoading(false); // Set loading false setelah selesai
     };
 
-    fetchData();
+    fetchData(); // Panggil fungsi fetch
   }, []);
 
+  // Fungsi untuk logout
   const handleLogout = async () => {
     try {
+      // Hapus data user dari AsyncStorage
       await AsyncStorage.removeItem("user");
+      // Redirect ke halaman utama
       router.replace("/");
     } catch (error) {
       console.log("Logout error:", error);
     }
   };
 
+  // Fungsi untuk format tanggal ke format WIB
   function formatWIB(dateStr: string | undefined) {
     if (!dateStr) return "-";
     const d = new Date(dateStr);
     const options: Intl.DateTimeFormatOptions = {
-      timeZone: "Asia/Jakarta",
+      timeZone: "Asia/Jakarta", // Timezone WIB
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
@@ -122,6 +158,19 @@ export default function AdminPage() {
 
       {/* Stats Cards */}
       <View style={sectionStyles.container}>
+        {/* Total User */}
+        <View style={cardStyles.container}>
+          <View style={cardStyles.header}>
+            <Text style={cardStyles.title}>Total User</Text>
+            <MaterialCommunityIcons
+              name="account-group"
+              size={16}
+              color={colors.text.secondary}
+            />
+          </View>
+          <Text style={cardStyles.value}>{stats.totalUser}</Text>
+          <Text style={cardStyles.description}>Kelola semua user</Text>
+        </View>
 
         {/* Total Produk */}
         <View style={cardStyles.container}>
@@ -149,6 +198,20 @@ export default function AdminPage() {
           </View>
           <Text style={cardStyles.value}>{stats.totalTransaksi}</Text>
           <Text style={cardStyles.description}>Kelola semua transaksi</Text>
+        </View>
+
+        {/* Total Revenue */}
+        <View style={cardStyles.container}>
+          <View style={cardStyles.header}>
+            <Text style={cardStyles.title}>Total Revenue</Text>
+            <MaterialCommunityIcons
+              name="cash-multiple"
+              size={16}
+              color={colors.text.secondary}
+            />
+          </View>
+          <Text style={[cardStyles.value, { fontSize: 20 }]}>{formatRupiah(stats.totalRevenue)}</Text>
+          <Text style={cardStyles.description}>Total pendapatan</Text>
         </View>
       </View>
 
