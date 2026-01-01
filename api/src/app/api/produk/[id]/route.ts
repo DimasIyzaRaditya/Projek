@@ -11,17 +11,7 @@ export async function GET(
     const produk = await prisma.produk.findUnique({
       where: { id: parseInt(id) },
       include: {
-        transaksi: {
-          include: {
-            user: {
-              select: {
-                id: true,
-                name: true,
-                username: true,
-              },
-            },
-          },
-        },
+        transaksi: true,
       },
     });
 
