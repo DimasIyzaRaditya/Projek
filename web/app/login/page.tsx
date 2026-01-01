@@ -121,7 +121,7 @@ export default function LoginPage() {
             </Button>
 
             <div className="text-center text-sm text-neutral-400">
-              <Link href="/" className="text-neutral-50 hover:underline">
+              <Link href="/" className="text-neutral-50 hover:underline cursor-pointer">
                 Kembali ke beranda
               </Link>
             </div>
