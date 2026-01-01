@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Download, Star, ShoppingCart, ArrowLeft, BookOpen, Code2, Palette, Layout } from "lucide-react"
 import Link from "next/link"
 import { API_PRODUK_BY_ID } from "@/lib/api"
+import BuyNowButton from "@/components/buy-now-button"
 
 interface Produk {
   id: number
@@ -201,10 +202,11 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
                 {/* Actions */}
                 <div className="space-y-3">
-                  <Button className="w-full bg-neutral-50 text-neutral-900 hover:bg-white shadow-md font-medium" size="lg">
-                    <ShoppingCart className="h-5 w-5 mr-2" />
-                    Beli Sekarang
-                  </Button>
+                  <BuyNowButton 
+                    produkId={product.id}
+                    produkNama={product.nama}
+                    harga={product.harga}
+                  />
                 </div>
               </CardContent>
             </Card>
