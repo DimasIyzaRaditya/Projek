@@ -206,28 +206,6 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                     Beli Sekarang
                   </Button>
                 </div>
-
-                {/* Features */}
-                <div className="pt-4 border-t border-neutral-800">
-                  <div className="text-sm text-neutral-400 space-y-2">
-                    <div className="flex items-center gap-2">
-                      <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
-                      <span>Instant download</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
-                      <span>Lifetime access</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
-                      <span>Free updates</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
-                      <span>Money back guarantee</span>
-                    </div>
-                  </div>
-                </div>
               </CardContent>
             </Card>
           </div>
