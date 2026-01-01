@@ -286,44 +286,6 @@ export default function HomePage() {
           borderTopColor: colors.border.primary,
         }}
       >
-        <View style={statsStyles.container}>
-          <View style={statsStyles.item}>
-            <MaterialCommunityIcons
-              name="download"
-              size={24}
-              color={colors.text.secondary}
-            />
-            <Text style={statsStyles.value}>10K+</Text>
-            <Text style={statsStyles.label}>Total Download</Text>
-          </View>
-          <View style={statsStyles.item}>
-            <MaterialCommunityIcons
-              name="trending-up"
-              size={24}
-              color={colors.text.secondary}
-            />
-            <Text style={statsStyles.value}>500+</Text>
-            <Text style={statsStyles.label}>Produk Digital</Text>
-          </View>
-          <View style={statsStyles.item}>
-            <MaterialCommunityIcons
-              name="star"
-              size={24}
-              color={colors.text.secondary}
-            />
-            <Text style={statsStyles.value}>4.8</Text>
-            <Text style={statsStyles.label}>Rating Rata-rata</Text>
-          </View>
-          <View style={statsStyles.item}>
-            <MaterialCommunityIcons
-              name="trophy"
-              size={24}
-              color={colors.text.secondary}
-            />
-            <Text style={statsStyles.value}>100+</Text>
-            <Text style={statsStyles.label}>Penjual Terpercaya</Text>
-          </View>
-        </View>
       </View>
 
       {/* Featured Products */}
@@ -448,57 +410,6 @@ export default function HomePage() {
           paddingHorizontal: spacing.lg,
         }}
       >
-        <View style={{ marginBottom: spacing.xl }}>
-          <Text
-            style={[
-              commonStyles.textPrimary,
-              commonStyles.textSemibold,
-              { fontSize: typography.fontSize.md, marginBottom: spacing.md },
-            ]}
-          >
-            DigitalMarket
-          </Text>
-          <Text style={[commonStyles.textSecondary, { fontSize: typography.fontSize.xs }]}>
-            Platform jual beli file digital terpercaya di Indonesia
-          </Text>
-        </View>
-        <View style={{ marginBottom: spacing.xl }}>
-          <Text
-            style={[
-              commonStyles.textPrimary,
-              commonStyles.textSemibold,
-              { fontSize: typography.fontSize.base, marginBottom: spacing.md },
-            ]}
-          >
-            Produk
-          </Text>
-          <Text style={[commonStyles.textSecondary, { fontSize: typography.fontSize.xs, marginBottom: spacing.xs }]}>
-            Template
-          </Text>
-          <Text style={[commonStyles.textSecondary, { fontSize: typography.fontSize.xs, marginBottom: spacing.xs }]}>
-            E-Book
-          </Text>
-          <Text style={[commonStyles.textSecondary, { fontSize: typography.fontSize.xs, marginBottom: spacing.xs }]}>
-            Source Code
-          </Text>
-          <Text style={[commonStyles.textSecondary, { fontSize: typography.fontSize.xs }]}>
-            Assets
-          </Text>
-        </View>
-        <Text
-          style={[
-            commonStyles.textSecondary,
-            commonStyles.textCenter,
-            {
-              fontSize: typography.fontSize.xs,
-              borderTopWidth: 1,
-              borderTopColor: colors.border.primary,
-              paddingTop: spacing.xl,
-            },
-          ]}
-        >
-          © 2025 Ahmeng Trade. All rights reserved.
-        </Text>
       </View>
     </ScrollView>
   );
